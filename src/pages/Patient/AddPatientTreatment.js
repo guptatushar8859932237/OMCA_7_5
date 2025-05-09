@@ -476,14 +476,14 @@ export default function AddPatientTreatment() {
   const basicSchema = Yup.object().shape({
     patientId: Yup.string().required("patientId is required"),
     treatment_course_id: Yup.string().required(
-      "treatment_course_id is required"
+      "Treatment course  is required"
     ),
     services: Yup.array()
       .of(Yup.string().required("Service ID is required"))
       .min(1, "Select at least one service"),
-    totalCharge: Yup.string().required("totalCharge is required"),
-    amount_paid: Yup.string().required("amount_paid is required"),
-    paymentMethod: Yup.string().required("paymentMethod is required"),
+    totalCharge: Yup.string().required("Total Charge is required"),
+    amount_paid: Yup.string().required("Amount Paid is required"),
+    paymentMethod: Yup.string().required("Payment Method is required"),
   });
 
   // const handelSubmit = async (e) => {

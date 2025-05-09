@@ -445,8 +445,8 @@ export default function EditEnquiry() {
                           >
                             <option value="">Select Country</option>
                             {Countries.map((con, index) => (
-                              <option key={index} value={con.countryName}>
-                                {con.countryName}
+                              <option key={index} value={con.name}>
+                                {con.name}
                               </option>
                             ))}
                           </Field>

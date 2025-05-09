@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/omca/static/css/main.46265053.css",
-    "main.js": "/omca/static/js/main.1e71dd63.js",
+    "main.css": "/omca/static/css/main.04af3dab.css",
+    "main.js": "/omca/static/js/main.64897646.js",
     "static/media/dashboard-doc.png": "/omca/static/media/dashboard-doc.f03f443e05acd5633e20.png",
     "static/media/login-bg2.jpg": "/omca/static/media/login-bg2.6c36e70540693ea38524.jpg",
     "static/media/login-logo-bg.jpg": "/omca/static/media/login-logo-bg.b8ddc2831df29c21e51b.jpg",
@@ -10,11 +10,11 @@
     "static/media/doctor-03.jpg": "/omca/static/media/doctor-03.81f1385647235f9713c3.jpg",
     "static/media/logo-dark.png": "/omca/static/media/logo-dark.5913cbaed6b16cd0fbc0.png",
     "index.html": "/omca/index.html",
-    "main.46265053.css.map": "/omca/static/css/main.46265053.css.map",
-    "main.1e71dd63.js.map": "/omca/static/js/main.1e71dd63.js.map"
+    "main.04af3dab.css.map": "/omca/static/css/main.04af3dab.css.map",
+    "main.64897646.js.map": "/omca/static/js/main.64897646.js.map"
   },
   "entrypoints": [
-    "static/css/main.46265053.css",
-    "static/js/main.1e71dd63.js"
+    "static/css/main.04af3dab.css",
+    "static/js/main.64897646.js"
   ]
 }

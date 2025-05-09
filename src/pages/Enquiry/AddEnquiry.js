@@ -161,7 +161,7 @@ export default function AddEnquiry() {
                                                         <Field as="select" className="form-control" name="country">
                                                             <option value="" disabled selected>Select a country</option>
                                                             {Countries.map((con, index) => (
-                                                                <option key={index} value={con.countryName}>{con.countryName}</option>
+                                                                <option key={index} value={con.name}>{con.name}</option>
                                                             ))}
                                                         </Field>
                                                         <ErrorMessage name="country" component="div" style={{ color: "red" }} />

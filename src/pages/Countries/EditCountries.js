@@ -3,12 +3,12 @@ import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { baseurl } from '../../Basurl/Baseurl';
 import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
 export default function EditCountries() {
   const [inpdataa, setInpdataa] = useState({
     countryName: '',
-    countryCapital: '',
     countryCode: '',
-    countryCurrency: '',
+    phoneCode:''
   });
   const location = useLocation();
   const navigate = useNavigate();
@@ -30,10 +30,9 @@ export default function EditCountries() {
     e.preventDefault(); // prevent page reload
     try {
       const data = {
-        countryName: inpdataa.countryName,
-        countryCapital: inpdataa.countryCapital,
-        countryCode: inpdataa.countryCode,
-        countryCurrency: inpdataa.countryCurrency,
+        countryName: inpdataa.name,
+        countryCode: inpdataa.code,
+        phoneCode: inpdataa.dial_code
       };
       const response = await axios.put(
         `${baseurl}editCountry/${inpdataa._id}`,
@@ -47,6 +46,7 @@ export default function EditCountries() {
       );
       if (response.status === 200) {
         console.log("Country updated successfully");
+        toast.success("Country updated successfully");
         navigate('/Admin/Countries');
       } else {
         console.error("Error updating country:", response.statusText);
@@ -55,13 +55,14 @@ export default function EditCountries() {
       console.error("Error updating country:", error);
     }
   };
-
   return (
     <div className="page-wrapper">
       <div className="content">
         <div className="row">
           <div className="col-md-12">
-            <h4 className="page-title"><span><i class="fi fi-sr-angle-double-small-left"></i></span>Edit Countries</h4>
+            <h4 className="page-title"><span><i class="fi fi-sr-angle-double-small-left" style={{cursor:"pointer"}} onClick={()=>{
+              window.history.back()
+            }}></i></span>Edit Countries</h4>
           </div>
         </div>
         <div className="main_content">
@@ -72,10 +73,10 @@ export default function EditCountries() {
                   <label>Country Name<span className="text-danger">*</span></label>
                   <input
                     className="form-control"
-                    name="countryName"
+                    name="name"
                     type="text"
                     onChange={handlechange}
-                    value={inpdataa.countryName || ''}
+                    value={inpdataa.name || ''}
                     required
                   />
                 </div>
@@ -85,15 +86,15 @@ export default function EditCountries() {
                   <label>Code<span className="text-danger">*</span></label>
                   <input
                     className="form-control"
-                    name="countryCode"
+                    name="code"
                     type="text"
                     onChange={handlechange}
-                    value={inpdataa.countryCode || ''}
+                    value={inpdataa.code || ''}
                     required
                   />
                 </div>
               </div>
-              <div className="col-sm-6">
+              {/* <div className="col-sm-6">
                 <div className="field-set">
                   <label>Capital<span className="text-danger">*</span></label>
                   <input
@@ -105,8 +106,8 @@ export default function EditCountries() {
                     required
                   />
                 </div>
-              </div>
-              <div className="col-sm-6">
+              </div> */}
+              {/* <div className="col-sm-6">
                 <div className="field-set">
                   <label>Currency<span className="text-danger">*</span></label>
                   <input
@@ -118,6 +119,19 @@ export default function EditCountries() {
                     required
                   />
                 </div>
+              </div> */}
+              <div className="col-sm-6">
+                <div className="field-set">
+                  <label>Phone Code<span className="text-danger">*</span></label>
+                  <input
+                    className="form-control"
+                    name="dial_code"
+                    type="text"
+                    onChange={handlechange}
+                    value={inpdataa.dial_code || ''}
+                    required
+                  />
+                </div>
               </div>
             </div>
             <div className="">
@@ -126,6 +140,7 @@ export default function EditCountries() {
           </form>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }

@@ -12,11 +12,27 @@ export default function AddCountries() {
     countryName: Yup.string().required("Country Name is Required"),
 
     countryCapital: Yup.string().required("Country Capital is Required"),
+    phoneCode : Yup.string().required("Phone Code is Required"),
     countryCode: Yup.string()
       // .matches(passwordRules, { message: "Please create a stronger password" })
       .required("Country Code is  Required"),
     countryCurrency: Yup.string().required("Country Currency is Required"),
   });
+
+
+  const getallCountry = ()=>{
+    try {
+      const response = axios.get(`http://192.168.1.51:5201/api/getCountries`,{
+        headers: {
+          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+        },
+      })
+      console.log(response)
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <>
       <div className="page-wrapper">
@@ -38,6 +54,7 @@ export default function AddCountries() {
                 countryCapital: "",
                 countryCode: "",
                 countryCurrency: "",
+                phoneCode :""
               }}
               validationSchema={basicSchema}
               onSubmit={async (values, { setSubmitting }) => {
@@ -122,6 +139,23 @@ export default function AddCountries() {
                         />
                         <ErrorMessage
                           name="countryCurrency"
+                          component="p"
+                          style={{ color: "red" }}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-sm-6">
+                      <div className="field-set">
+                        <label>
+                          Country Code <span className="text-danger">*</span>
+                        </label>
+                        <Field
+                          className="form-control"
+                          type="text"
+                          name="phoneCode"
+                        />
+                        <ErrorMessage
+                          name="phoneCode"
                           component="p"
                           style={{ color: "red" }}
                         />

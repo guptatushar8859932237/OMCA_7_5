@@ -37,6 +37,10 @@ import { Margin } from "@mui/icons-material";
 function PatientDetail() {
   const navigate = useNavigate();
   const [seekerStatus, setSeekerStatus] = React.useState({});
+  const [pickuptime, setPickuptime] = useState("");
+  const [vehicalnumber, setVehicalnumber] = useState("");
+  const [drivername, setDrivername] = useState("");
+  const [drivercontact, setDrivercontact] = useState("");
   const location = useLocation();
   const dispatch = useDispatch();
   // const { patient, loading, error } = useSelector((state) => state.patient);
@@ -53,6 +57,7 @@ function PatientDetail() {
   const [open1, setOpen1] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
   const [open3, setOpen3] = React.useState(false);
+  const [open10, setOpen10] = React.useState(false);
   const [openModal, setOpenModal] = useState(false);
   // const [open4, setOpen4] = React.useState(false);
   const [open5, setOpen5] = React.useState(false);
@@ -174,6 +179,12 @@ function PatientDetail() {
     setTreatmentId(tretmentId);
     // setIShospitalArray(listhospital)
   };
+  const handleClickOpen10 = (e, tretmentId) => {
+    // alert("hello")
+    setOpen10(true);
+    setTreatmentId(tretmentId);
+    // setIShospitalArray(listhospital)
+  };
 
   const handleClose1 = () => {
     setOpen1(false);
@@ -183,6 +194,9 @@ function PatientDetail() {
   };
   const handleClose3 = () => {
     setOpen3(false);
+  };
+  const handleClose10 = () => {
+    setOpen10(false);
   };
   // const handleClose4 = () => {
   //   setOpen4(false);
@@ -312,8 +326,7 @@ function PatientDetail() {
     } catch (err) {
       setOpen(false);
       Swal.fire("Error!", err?.message || "An error occurred", "error");
-    }
-    finally {
+    } finally {
       setIsSubmitting(false); // Re-enable button
     }
   };
@@ -344,6 +357,10 @@ function PatientDetail() {
         treatment_id: treatmentId,
         note: note,
         appointment_Date: date,
+        pickup_time: pickuptime,
+        vehicle_no: vehicalnumber,
+        driver_name: drivername,
+        driver_contact: drivercontact,
       })
     ).unwrap();
     try {
@@ -718,6 +735,11 @@ function PatientDetail() {
                   Payment Details
                 </a>
               </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#bottom-tab5" data-toggle="tab">
+                 Reports
+                </a>
+              </li>
             </ul>
             <div className="tab-content">
               <div className="tab-pane show active" id="about-cont">
@@ -837,215 +859,14 @@ function PatientDetail() {
                                 </div>
                               </div>
                               <hr></hr>
-                              <div className="service-list">
-                                <h6>Treatment</h6>
-                              </div>
-                              <ul>
-                                <li>
-                                  <div className="row">
-                                    <div className="col-sm-2">
-                                      <div className="para-main-div">
-                                        <h6>Name:</h6>
-                                      </div>
-                                    </div>
-                                    <div className="col-sm-2">
-                                      <div className="para-main-div">
-                                        <p>{info.treatment_name}</p>
-                                      </div>
-                                    </div>
+                              <div className="d-flex">
+                                <div className="col-6">
+                                  <div className="service-list col-6">
+                                    <h6>Treatment</h6>
                                   </div>
-                                  <div className="row">
-                                    <div className="col-sm-2">
-                                      <div className="para-main-div">
-                                        <h6>Charge:</h6>
-                                      </div>
-                                    </div>
-                                    <div className="col-sm-2">
-                                      <div className="para-main-div">
-                                        <p>not available</p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </li>
-                              </ul>
-                              <div className="service-list">
-                                <h6>Hospital</h6>
-                              </div>
-                              <ul className="mb-2">
-                                {info.Hospital_details.map(
-                                  (item) => {
-                                    console.log(item);
-                                    return (
-                                      <>
-                                        <li>
-                                          <div className="row">
-                                            <div className="col-sm-2">
-                                              <div className="para-main-div">
-                                                <h6>Name:</h6>
-                                              </div>
-                                            </div>
-                                            <div className="col-sm-2">
-                                              <div className="para-main-div">
-                                                <p>{item.hospital_Name}</p>
-                                              </div>
-                                            </div>
-                                          </div>
-                                          <div className="row">
-                                            <div className="col-sm-2">
-                                              <div className="para-main-div">
-                                                <h6>Charge:</h6>
-                                              </div>
-                                            </div>
-                                            <div className="col-sm-2">
-                                              <div className="para-main-div">
-                                                <p>{item.hospital_charge}</p>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </li>
-                                      </>
-                                    );
-                                  }
-                                )}
-                              </ul>
-                              <div className="service-list">
-                                <h6>Appointment</h6>
-                              </div>
-                              <ul className="mb-2">
-                                {info.appointments_details.map(
-                                  (item) => {
-                                    console.log(item);
-                                    return (
-                                      <>
-                                        <li>
-                                          <div className="row">
-                                            <div className="col-sm-2">
-                                              <div className="para-main-div">
-                                                <h6>ID:</h6>
-                                              </div>
-                                            </div>
-                                            <div className="col-sm-2">
-                                              <div className="para-main-div">
-                                                <p>{item.appointmentId}</p>
-                                              </div>
-                                            </div>
-                                          </div>
-                                          <div className="row">
-                                            <div className="col-sm-2">
-                                              <div className="para-main-div">
-                                                <h6>Date:</h6>
-                                              </div>
-                                            </div>
-                                            <div className="col-sm-2">
-                                              <div className="para-main-div1">
-                                                <p>{item.appointment_Date}</p>
-                                                {item.status ===
-                                                  "Complete" ? (
-                                                  <p>{item.status}</p>
-                                                ) : (
-                                                  <FormControl
-                                                    sx={{
-                                                      m: 1,
-                                                      minWidth: 120,
-                                                    }}
-                                                    size="small"
-                                                    className="app-status"
-                                                  >
-                                                    <Select
-                                                      value={
-                                                        item.status ===
-                                                          "pending"
-                                                          ? "1"
-                                                          : item.status ===
-                                                            "Follow-Up"
-                                                            ? "2"
-                                                            : item.status ===
-                                                              "Complete"
-                                                              ? "3"
-                                                              : item.status ===
-                                                                "Cancelled"
-                                                                ? "4"
-                                                                : "1"
-                                                      }
-                                                      onChange={(e) =>
-                                                        handleChangeDetails(
-                                                          e,
-                                                          item.appointmentId
-                                                        )
-                                                      }
-                                                      displayEmpty
-                                                      inputProps={{
-                                                        "aria-label":
-                                                          "Without label",
-                                                      }}
-                                                      className="status-direct1"
-                                                    >
-                                                      <MenuItem value="1">
-                                                        Schedule
-                                                      </MenuItem>
-                                                      <MenuItem value="2">
-                                                        Follow-Up
-                                                      </MenuItem>
-                                                      <MenuItem value="3">
-                                                        Complete
-                                                      </MenuItem>
-                                                      <MenuItem value="4">
-                                                        Cancelled
-                                                      </MenuItem>
-                                                    </Select>
-                                                  </FormControl>
-                                                )}
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </li>
-                                      </>
-                                    );
-                                  }
-                                )}
-                              </ul>
-                              <div className="service-list">
-                                <h6>Free Services</h6>
-                              </div>
-                              <ul className="mb-2">
-                                {info?.services?.map((item) => {
-                                  if (
-                                    item.service_type === "Free"
-                                  ) {
-                                    return (
-                                      <li key={
-                                        item._id ||
-                                        item.serviceName
-                                      }>
-                                        <div className="row">
-                                          <div className="col-sm-2">
-                                            <div className="para-main-div">
-                                              <h6>Name:</h6>
-                                            </div>
-                                          </div>
-                                          <div className="col-sm-2">
-                                            <div className="para-main-div">
-                                              <p>{item.serviceName}</p>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </li>
-                                    );
-                                  }
-                                  return null;
-                                })}
-                              </ul>
-                              <div className="service-list">
-                                <h6>Extra Services</h6>
-                              </div>
-                              <ul className="mb-2">
-                                {info?.services?.map((item) => {
-                                  if (!item.price) return null;
-                                  return (
-                                    <li key={
-                                      item._id ||
-                                      item.service_type
-                                    }>
+
+                                  <ul>
+                                    <li>
                                       <div className="row">
                                         <div className="col-sm-2">
                                           <div className="para-main-div">
@@ -1054,26 +875,258 @@ function PatientDetail() {
                                         </div>
                                         <div className="col-sm-2">
                                           <div className="para-main-div">
-                                            <p>{item.serviceName}</p>
+                                            <p>{info.treatment_name}</p>
                                           </div>
                                         </div>
                                       </div>
                                       <div className="row">
                                         <div className="col-sm-2">
                                           <div className="para-main-div">
-                                            <h6>Price:</h6>
+                                            <h6>Charge:</h6>
                                           </div>
                                         </div>
                                         <div className="col-sm-2">
                                           <div className="para-main-div">
-                                            <p>{item.price}</p>
+                                            <p>{info.treatment_course_fee}</p>
                                           </div>
                                         </div>
                                       </div>
                                     </li>
-                                  );
-                                })}
-                              </ul>
+                                  </ul>
+                                  <div className="service-list">
+                                    <h6>Hospital</h6>
+                                  </div>
+                                  <ul className="mb-2">
+                                    {info.Hospital_details.map((item) => {
+                                      console.log(item);
+                                      return (
+                                        <>
+                                          <li>
+                                            <div className="row">
+                                              <div className="col-sm-2">
+                                                <div className="para-main-div">
+                                                  <h6>Name:</h6>
+                                                </div>
+                                              </div>
+                                              <div className="col-sm-2">
+                                                <div className="para-main-div">
+                                                  <p>{item.hospital_Name}</p>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div className="row">
+                                              <div className="col-sm-2">
+                                                <div className="para-main-div">
+                                                  <h6>Charge:</h6>
+                                                </div>
+                                              </div>
+                                              <div className="col-sm-2">
+                                                <div className="para-main-div">
+                                                  <p>{item.hospital_charge}</p>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </li>
+                                        </>
+                                      );
+                                    })}
+                                  </ul>
+                                  <div className="service-list">
+                                    <h6>Appointment</h6>
+                                  </div>
+                                  <ul className="mb-2">
+                                    {info.appointments_details.map((item) => {
+                                      console.log(item);
+                                      return (
+                                        <>
+                                          <li>
+                                            <div className="row">
+                                              <div className="col-sm-2">
+                                                <div className="para-main-div">
+                                                  <h6>ID:</h6>
+                                                </div>
+                                              </div>
+                                              <div className="col-sm-2">
+                                                <div className="para-main-div">
+                                                  <p>{item.appointmentId}</p>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div className="row">
+                                              <div className="col-sm-2">
+                                                <div className="para-main-div">
+                                                  <h6>Date:</h6>
+                                                </div>
+                                              </div>
+                                              <div className="col-sm-2">
+                                                <div className="para-main-div1">
+                                                  <p>{item.appointment_Date}</p>
+                                                  {item.status ===
+                                                  "Complete" ? (
+                                                    <p>{item.status}</p>
+                                                  ) : (
+                                                    <FormControl
+                                                      sx={{
+                                                        m: 1,
+                                                        minWidth: 120,
+                                                      }}
+                                                      size="small"
+                                                      className="app-status"
+                                                    >
+                                                      <Select
+                                                        value={
+                                                          item.status ===
+                                                          "pending"
+                                                            ? "1"
+                                                            : item.status ===
+                                                              "Follow-Up"
+                                                            ? "2"
+                                                            : item.status ===
+                                                              "Complete"
+                                                            ? "3"
+                                                            : item.status ===
+                                                              "Cancelled"
+                                                            ? "4"
+                                                            : "1"
+                                                        }
+                                                        onChange={(e) =>
+                                                          handleChangeDetails(
+                                                            e,
+                                                            item.appointmentId
+                                                          )
+                                                        }
+                                                        displayEmpty
+                                                        inputProps={{
+                                                          "aria-label":
+                                                            "Without label",
+                                                        }}
+                                                        className="status-direct1"
+                                                      >
+                                                        <MenuItem
+                                                          value="1"
+                                                          disabled
+                                                        >
+                                                          Schedule
+                                                        </MenuItem>
+                                                        <MenuItem value="2">
+                                                          Follow-Up
+                                                        </MenuItem>
+                                                        <MenuItem value="3">
+                                                          Complete
+                                                        </MenuItem>
+                                                        <MenuItem value="4">
+                                                          Cancelled
+                                                        </MenuItem>
+                                                      </Select>
+                                                    </FormControl>
+                                                  )}
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </li>
+                                        </>
+                                      );
+                                    })}
+                                  </ul>
+                                  <div className="service-list">
+                                    <h6>Free Services</h6>
+                                  </div>
+                                  <ul className="mb-2">
+                                    {info?.services?.map((item) => {
+                                      if (item.service_type === "Free") {
+                                        return (
+                                          <li
+                                            key={item._id || item.serviceName}
+                                          >
+                                            <div className="row">
+                                              <div className="col-sm-2">
+                                                <div className="para-main-div">
+                                                  <h6>Name:</h6>
+                                                </div>
+                                              </div>
+                                              <div className="col-sm-2">
+                                                <div className="para-main-div">
+                                                  <p>{item.serviceName}</p>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </li>
+                                        );
+                                      }
+                                      return null;
+                                    })}
+                                  </ul>
+                                  <div className="service-list">
+                                    <h6>Extra Services</h6>
+                                  </div>
+                                  <ul className="mb-2">
+                                    {info?.services?.map((item) => {
+                                      if (!item.price) return null;
+                                      return (
+                                        <li key={item._id || item.service_type}>
+                                          <div className="row">
+                                            <div className="col-sm-2">
+                                              <div className="para-main-div">
+                                                <h6>Name:</h6>
+                                              </div>
+                                            </div>
+                                            <div className="col-sm-2">
+                                              <div className="para-main-div">
+                                                <p>{item.serviceName}</p>
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div className="row">
+                                            <div className="col-sm-2">
+                                              <div className="para-main-div">
+                                                <h6>Price:</h6>
+                                              </div>
+                                            </div>
+                                            <div className="col-sm-2">
+                                              <div className="para-main-div">
+                                                <p>{item.price}</p>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </li>
+                                      );
+                                    })}
+                                  </ul>
+                                </div>
+                                <div className="col-12">
+  <div className="mb-3">
+    <h5>Appointment</h5>
+    {/* <p className="mx-5">{info.treatment_status}</p> */}
+  </div>
+
+  {info?.appointments_details?.[0] && (
+    <div>
+    <div className="row">
+      <div className="col-sm-3 mb-2">
+        <h6>Vehicle Number:</h6>
+        <p>{info.appointments_details[0].vehicle_no}</p>
+      </div>
+      <div className="col-sm-3 mb-2">
+        <h6>Driver Name:</h6>
+        <p>{info.appointments_details[0].driver_name}</p>
+      </div>
+      </div>
+       <div className="row">
+      <div className="col-sm-3 mb-2">
+        <h6>Driver Contact:</h6>
+        <p>{info.appointments_details[0].driver_contact}</p>
+      </div>
+      <div className="col-sm-3 mb-2">
+        <h6>Pickup Time:</h6>
+        <p>{info.appointments_details[0].pickup_time}</p>
+      </div>
+    </div>
+    </div>
+  )}
+</div>
+
+                              </div>
+
                               <hr></hr>
                               <div className="row justify-content-end">
                                 <div className="col-md-12">
@@ -1282,12 +1335,10 @@ function PatientDetail() {
                           );
                         })}
                       </>
-                    )
-                    }
+                    )}
                   </div>
-
-                </div >
-              </div >
+                </div>
+              </div>
               <div className="tab-pane" id="bottom-tab2">
                 <div className="main-tab-hd">
                   <div className="all-hd">
@@ -1308,55 +1359,55 @@ function PatientDetail() {
                     {kys?.length === 0
                       ? "No passport details found"
                       : kys?.map((info, index) => (
-                        <div key={index} className="card-box">
-                          <div className="pass-detail">
-                            <div className="img-patient">
-                              <h6>Patient Image</h6>
-                              <img
-                                src={`${image}${info.photo}`}
-                                alt="no image"
-                                className="rounded-circle shadow"
-                                width="100"
-                                height="100"
-                              />
-                            </div>
-                            <div className="id-proof">
-                              <h6>Id Proof</h6>
-                              {info.id_proof ? (
-                                <a
-                                  href={`https://sisccltd.com/omca_crm/${info.id_proof}`}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="btn btn-outline-primary btn-sm"
-                                >
-                                  View PDF
-                                </a>
-                              ) : (
-                                <span className="text-muted">
-                                  Not Uploaded
-                                </span>
-                              )}
-                              <div className="">
-                                <h6>Passport</h6>
-                                {info.passport ? (
+                          <div key={index} className="card-box">
+                            <div className="pass-detail">
+                              <div className="img-patient">
+                                <h6>Patient Image</h6>
+                                <img
+                                  src={`${image}${info.photo}`}
+                                  alt="no image"
+                                  className="rounded-circle shadow"
+                                  width="100"
+                                  height="100"
+                                />
+                              </div>
+                              <div className="id-proof">
+                                <h6>Id Proof</h6>
+                                {info.id_proof ? (
                                   <a
-                                    href={`https://sisccltd.com/omca_crm/${info.passport}`}
+                                    href={`https://sisccltd.com/omca_crm/${info.id_proof}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="view-pass"
+                                    className="btn btn-outline-primary btn-sm"
                                   >
-                                    View Passport
+                                    View PDF
                                   </a>
                                 ) : (
                                   <span className="text-muted">
                                     Not Uploaded
                                   </span>
                                 )}
+                                <div className="">
+                                  <h6>Passport</h6>
+                                  {info.passport ? (
+                                    <a
+                                      href={`https://sisccltd.com/omca_crm/${info.passport}`}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="view-pass"
+                                    >
+                                      View Passport
+                                    </a>
+                                  ) : (
+                                    <span className="text-muted">
+                                      Not Uploaded
+                                    </span>
+                                  )}
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
+                        ))}
                   </div>
                 </div>
               </div>
@@ -1583,12 +1634,86 @@ function PatientDetail() {
                   </div>
                 </div>
               </div>
-            </div >
-          </div >
-        </div >
-      </div >
+              <div className="tab-pane" id="bottom-tab5">
+                <div className="main-tab-hd">
+                  <div className="all-hd">
+                    <h6>Reports</h6>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-12">
+                    
+                    {payment_details?.length === 0 ? (
+                      "No payment details for patients"
+                    ) : (
+                      <>
+                        {groupedPayments &&
+                          Object.entries(groupedPayments).map(
+                            ([treatmentId, payments], index) => (
+                              <div className="card-box" key={treatmentId}>
+                                <div className="treat-card">
+                                  <div className="treat-id">
+                                    <div>
+                                      <h3>Treatment ID-{treatmentId}</h3>
+                                    </div>
+                                  </div>
+                                  <div className="">
+                                    <button
+                                      onClick={(e) =>
+                                        handleClickOpen10(e, treatmentId)
+                                      }
+                                      className="add-button"
+                                    >
+                                      <span>
+                                        <i className="fa fa-plus"></i>
+                                      </span>{" "}
+                                     Add Report
+                                    </button>
+                                  </div>
+                                </div>
+                                <hr></hr>
+                                <div className="experience-box">
+                                  <ul className="experience-list">
+                                    {payments.map((info, idx) => (
+                                      <li key={idx}>
+                                        <div className="experience-user">
+                                          <div className="before-circle"></div>
+                                        </div>
+                                        <div className="experience-content">
+                                          <div className="timeline-content">
+                                            <div>
+                                              Payment Date -{" "}
+                                              {moment(info.payment_Date).format(
+                                                "L"
+                                              )}
+                                            </div>
+                                            <div>
+                                              Payment Method -{" "}
+                                              {info.paymentMethod}
+                                            </div>
+                                            <div>
+                                              Paid Amount - {info.paid_amount}
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              </div>
+                            )
+                          )}
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       {/* add-service-modal-start */}
-      < React.Fragment >
+      <React.Fragment>
         <Dialog fullWidth maxWidth="sm" open={openModal} onClose={closeModal}>
           <div className="main-card-header">
             <div className="note-hd">
@@ -1683,7 +1808,7 @@ function PatientDetail() {
             </Box>
           </DialogContent>
         </Dialog>
-      </React.Fragment >
+      </React.Fragment>
       {/* add-service-modal-end */}
       {/* add-hospital-modal-start */}
       <React.Fragment>
@@ -1780,15 +1905,15 @@ function PatientDetail() {
                     </span>
                   </div>
                   <DialogActions className="submit-main">
-  <Button
-    type="submit"
-    onClick={(e) => handlesubmit(e)}
-    variant="contained"
-    disabled={isSubmitting} // ✅ disables button while submitting
-  >
-    {isSubmitting ? "Submitting..." : "Submit"}
-  </Button>
-</DialogActions>
+                    <Button
+                      type="submit"
+                      onClick={(e) => handlesubmit(e)}
+                      variant="contained"
+                      disabled={isSubmitting} // ✅ disables button while submitting
+                    >
+                      {isSubmitting ? "Submitting..." : "Submit"}
+                    </Button>
+                  </DialogActions>
                   {/* <DialogActions className="submit-main">
                     <Button
                       type="submit"
@@ -1904,6 +2029,69 @@ function PatientDetail() {
                     <span style={{ color: "red" }}>
                       {appointErr && !note ? "*Please Enter Your date" : ""}
                     </span>
+                  </div>
+                  <div className="field-set">
+                    <label>
+                      Pickup Time<span className="text-danger">*</span>
+                    </label>
+                    <input
+                      type="time"
+                      id="birthday"
+                      name="pickup_time"
+                      placeholder="pickup_time"
+                      className="form-control"
+                      onChange={(e) => setPickuptime(e.target.value)}
+                      value={pickuptime}
+                      // min={new Date().toISOString().split("T")[0]}
+                    />
+                    {/* <span style={{ color: "red" }}>
+                      {appointErr && !note ? "*Please Enter Your date" : ""}
+                    </span> */}
+                  </div>
+                  {/* vehicle_no:vehicalnumber, */}
+                  {/* driver_name:drivername, */}
+                  {/* driver_contact:drivercontact */}
+                  <div className="field-set">
+                    <label>
+                      Driver Name<span className="text-danger">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      id="birthday"
+                      name="driver_name"
+                      placeholder="driver_name"
+                      className="form-control"
+                      onChange={(e) => setDrivername(e.target.value)}
+                      value={drivername}
+                    />
+                  </div>
+                  <div className="field-set">
+                    <label>
+                      Driver Contact<span className="text-danger">*</span>
+                    </label>
+                    <input
+                      type="number"
+                      id="birthday"
+                      name="driver_contact"
+                      placeholder="Appointment Date"
+                      className="form-control"
+                      onChange={(e) => setDrivercontact(e.target.value)}
+                      value={drivercontact}
+                    />
+                  </div>
+                  <div className="field-set">
+                    <label>
+                      Vehical Number<span className="text-danger">*</span>
+                    </label>
+                    <input
+                      type="type"
+                      id="birthday"
+                      name="vehicle_no"
+                      placeholder="Vehical Number"
+                      className="form-control"
+                      onChange={(e) => setVehicalnumber(e.target.value)}
+                      value={vehicalnumber}
+                    />
                   </div>
                   <DialogActions className="submit-main">
                     <Button
@@ -2160,6 +2348,80 @@ function PatientDetail() {
                     <Button
                       type="submit"
                       onClick={(e) => handleAddTritmentPayment(e)}
+                      variant="contained"
+                    >
+                      Submit
+                    </Button>
+                  </DialogActions>
+                </form>
+              </Box>
+            </Box>
+          </DialogContent>
+        </Dialog>
+      </React.Fragment>
+      <React.Fragment>
+        <Dialog
+          fullWidth={fullWidth}
+          maxWidth={maxWidth}
+          open={open10}
+          onClose={handleClose10}
+        >
+          <div className="main-card-header">
+            <div className="note-hd">
+              <h6>Add Reports</h6>
+            </div>
+            <div className="cross-icon" onClick={handleClose10}>
+              <i class="fa-solid fa-xmark"></i>
+            </div>
+          </div>
+          <DialogContent className="main-box">
+            <Box
+              noValidate
+              component="form"
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                width: "fit-content",
+              }}
+              className="contact-form"
+            >
+              <Box>
+                <form id="contact-form" className="contact-form">
+                  <div className="field-set">
+                    <label>
+                      Reports Image<span className="text-danger">*</span>
+                    </label>
+                    <input
+                      type="file"
+                      placeholder="paid amount"
+                      className="form-control"
+                      multiple
+                      name="paid_amount"
+                      required=""
+                      onChange={AddpaymentOnchnage}
+                      value={data.paid_amount}
+                    />
+                  </div>
+                  <div className="field-set">
+                    <label>
+                      Reports PDF<span className="text-danger">*</span>
+                    </label>
+                    <input
+                      type="file"
+                      multiple
+                      placeholder="payment Method"
+                      className="form-control"
+                      name="paymentMethod"
+                      required=""
+                      onChange={AddpaymentOnchnage}
+                      value={data.paymentMethod}
+                    />
+                  </div>
+                  
+                  <DialogActions className="submit-main">
+                    <Button
+                      type="submit"
+                      // onClick={(e) => handleAddTritmentPayment(e)}
                       variant="contained"
                     >
                       Submit
