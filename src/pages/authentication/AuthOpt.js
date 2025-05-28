@@ -71,12 +71,15 @@ export const AuthOpt = () => {
                 console.log(error);
             });
     };
+<<<<<<< HEAD
    const handlekeypress = (e) => {
   const isNumber = /^[0-9]$/;
   if (!isNumber.test(e.key)) {
     e.preventDefault();
   }
 };
+=======
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
 
     return (
         <>
@@ -116,9 +119,14 @@ export const AuthOpt = () => {
                                                                             borderRadius: 4,
                                                                             border: "2px solid rgba(0,0,0,0.3)",
                                                                             display: "block",
+<<<<<<< HEAD
                                                                             textAlign: "center",
                                                                         }}
                                                                         onKeyPress={handlekeypress}
+=======
+                                                                            textAlign: "center"
+                                                                        }}
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
                                                                         value={otp}
                                                                         onChange={setOtp}
                                                                         numInputs={4}

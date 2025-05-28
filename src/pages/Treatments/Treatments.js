@@ -135,6 +135,7 @@ export default function Treatments() {
                             id="panel1-header"
                             className="order-mnge"
                           >
+<<<<<<< HEAD
                             <div className="d-flex justify-content-between w-100">
                               <div className="" style={{ width:'50%' }}>
                                 <div className="treat-name">
@@ -153,6 +154,24 @@ export default function Treatments() {
                                     )}
                                   </Typography>
                                 </div>
+=======
+                            <div className="treat-name col-6">
+                              <div className="col-10">
+                                <Typography>{item.course_name}</Typography>
+                                <Typography>
+                                  <span>Price-{item.course_price}</span>
+                                </Typography>
+                              </div>
+                              <div className="col-8">
+                                <Typography>
+                                  <span>Demanding Country- </span>
+                                  {item.most_demanded_country ? (
+                                    <span>{item.most_demanded_country}</span>
+                                  ) : (
+                                    ""
+                                  )}
+                                </Typography>
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
                               </div>
                             </div>
                             <div className="treat-icon">

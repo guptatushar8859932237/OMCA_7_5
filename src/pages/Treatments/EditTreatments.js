@@ -153,9 +153,15 @@ export default function EditTreatments() {
           <div className="row">
             <div className="col-md-12">
               <h4 className="page-title">
+<<<<<<< HEAD
                 <span><i className="fi fi-sr-angle-double-small-left" onClick={() => {
                   window.history.back()
                 }} style={{ cursor: "pointer" }}></i></span> Edit Treatments
+=======
+                <span><i className="fi fi-sr-angle-double-small-left" onClick={()=>{
+                                    window.history.back()
+                                }} style={{cursor:"pointer"}}></i></span> Edit Treatments
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
               </h4>
             </div>
           </div>
@@ -199,6 +205,7 @@ export default function EditTreatments() {
                         <ErrorMessage name="course_price" component="div" style={{ color: 'red' }} />
                       </div>
                     </div>
+<<<<<<< HEAD
                     <div className="col-sm-12">
                       <div className="field-set1">
                         <label>Categories <span className="text-danger">*</span></label>
@@ -253,6 +260,61 @@ export default function EditTreatments() {
                         </FieldArray>
                       </div>
                     </div>
+=======
+                  </div>
+                  <div className="mt-4">
+                    <label>Categories</label>
+                    <FieldArray name="categories">
+                      {({ remove, push }) => (
+                        <div>
+                          {values.categories.map((category, index) => (
+                            <div className="row mb-2" key={index}>
+                              <div className="col-sm-5">
+                                <Field
+                                  className="form-control"
+                                  name={`categories[${index}].category_name`}
+                                  placeholder="Enter category name"
+                                />
+                                <ErrorMessage
+                                  name={`categories[${index}].category_name`}
+                                  component="div"
+                                  style={{ color: 'red' }}
+                                />
+                              </div>
+                              <div className="col-sm-2">
+                                {values.categories.length > 1 && (
+                                  <button
+                                    type="button"
+                                    className="btn btn-danger"
+                                    onClick={() => remove(index)}
+                                  >
+                                    Remove
+                                  </button>
+                                )}
+                              </div>
+                              <Field
+                                type="hidden"
+                                name={`categories[${index}].category_id`}
+                              />
+                            </div>
+                          ))}
+                          <button
+                            type="button"
+                            className="btn btn-info"
+                            onClick={() => push({ category_name: '', category_id: '' })}
+                          >
+                            Add Category
+                          </button>
+                        </div>
+                      )}
+                    </FieldArray>
+                  </div>
+
+                  <div className="mt-4">
+                    <button type="submit" className="submit-btn" disabled={isSubmitting}>
+                      Submit
+                    </button>
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
                   </div>
                 </Form>
               )}
@@ -262,4 +324,8 @@ export default function EditTreatments() {
       </div>
     </>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9

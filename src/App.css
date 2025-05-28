@@ -6447,7 +6447,10 @@ select.custom-select.custom-select-sm.form-control.form-control-sm {
 .treat-name {
   display: flex;
   align-items: center;
+<<<<<<< HEAD
   gap: 8px;
+=======
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
 }
 .treat-icon {
   display: flex;

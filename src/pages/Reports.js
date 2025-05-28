@@ -702,7 +702,10 @@ export default function Reports() {
                         <TableCell>Patient Name</TableCell>
                         <TableCell> Contact No</TableCell>
                         <TableCell>Email</TableCell>
+<<<<<<< HEAD
                         <TableCell>Date</TableCell>
+=======
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
                         <TableCell>Country</TableCell>
                         <TableCell>Patient Disease</TableCell>
                       </TableRow>
@@ -733,7 +736,10 @@ export default function Reports() {
                                     : info.emergency_contact_no}
                                 </TableCell>
                                 <TableCell>{info.email}</TableCell>
+<<<<<<< HEAD
                                 <TableCell>{new Date(info.createdAt).toLocaleDateString('en-GB')}</TableCell>
+=======
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
                                 <TableCell>{info.country}</TableCell>
                                 <TableCell>
                                   {info.treatment_course_name}

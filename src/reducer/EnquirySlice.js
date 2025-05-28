@@ -32,7 +32,11 @@ export const DeleteEnquiry = createAsyncThunk(
         `${baseurl}deleteEnquiry/${e.id.enquiryId}`,
         {
           headers: {
+<<<<<<< HEAD
             Authorization: `Bearer ${localStorage.getItem("_id")}`,
+=======
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
             "Content-Type": "application/json",
           },
         }
@@ -47,6 +51,7 @@ export const DeleteEnquiry = createAsyncThunk(
   }
 );
 
+<<<<<<< HEAD
 // export const AddEnquirys = createAsyncThunk(
 //   "Enquiry/AddEnquiry",
 //   async (object, { rejectWithValue }) => {
@@ -103,6 +108,25 @@ export const AddEnquirys = createAsyncThunk(
       return response.data;
     } catch (error) {
       console.error("Error adding enquiry:", error.response?.data?.message);
+=======
+export const AddEnquirys = createAsyncThunk(
+  "Enquiry/AddEnquiry",
+  async (object, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        `${baseurl}add_new_enq/${localStorage.getItem("_id")}`,
+        object,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return response.data; // Success response
+    } catch (error) {
+      console.error("Error adding staff user:", error.response?.data?.message);
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
       return rejectWithValue(
         error.response?.data || { message: "An unknown error occurred" }
       );
@@ -110,6 +134,7 @@ export const AddEnquirys = createAsyncThunk(
   }
 );
 
+<<<<<<< HEAD
 // export const EditEnquiryType = createAsyncThunk(
 //   "Enquiry/EditEnquiryType",
 //   async (enquiryId, { rejectWithValue }) => {
@@ -183,12 +208,35 @@ export const EditEnquiryType = createAsyncThunk(
       return response.data;
     } catch (err) {
       console.error("Error editing enquiry:", err.response?.data?.message || err.message);
+=======
+export const EditEnquiryType = createAsyncThunk(
+  "Enquiry/EditEnquiryType",
+  async (enquiryId, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(
+        `${baseurl}update_enq/${enquiryId.id}`,
+        enquiryId,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return response.data; // Success response
+    } catch (err) {
+      console.error("Error editing staff user:", err.response?.data?.message);
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
       return rejectWithValue(
         err.response?.data || { message: "An unknown error occurred" }
       );
     }
   }
 );
+<<<<<<< HEAD
+=======
+
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
 export const EnquiryStatus = createAsyncThunk(
   "Enquiry/StatusPatient",
   async (object, { rejectWithValue }) => {

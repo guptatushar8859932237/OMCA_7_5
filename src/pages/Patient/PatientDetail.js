@@ -70,7 +70,11 @@ function PatientDetail() {
   const [kys, setKyc] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [notes, setNotes] = useState([]);
+<<<<<<< HEAD
   const [dataHospital, setDataHospital] = useState([]);
+=======
+  const [dataHospital,setDataHospital] = useState([]);
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
   const [imagefile, setImagefile] = useState(null);
   const [enqId, setEnqId] = useState("");
   const [serviceData, setServiceData] = useState([]);
@@ -256,8 +260,13 @@ function PatientDetail() {
       console.log(response.data);
       if (response.data.success === true) {
         setOpenModal(false);
+<<<<<<< HEAD
         dispatch(GetPatientTreatments({ id: location.state.patientId }));
         Swal.fire("Service Added successfully!", "", "success");
+=======
+         dispatch(GetPatientTreatments({ id: location.state.patientId }));
+       Swal.fire("Service Added successfully!", "", "success");
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
       }
     } catch (error) {
       console.log(error);
@@ -404,14 +413,21 @@ function PatientDetail() {
   //   }
   // };
 
+<<<<<<< HEAD
   const getdataApi = async () => {
     try {
       const rresponse = await axios.get(`${baseurl}getActiveHospitals`, {
+=======
+const getdataApi =async()=>{
+  try {
+    const rresponse = await axios.get(`${baseurl}getActiveHospitals`,{
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
         headers: {
           "Authorization": `Bearer ${localStorage.getItem("token")}`,
           "Content-Type": "application/json",
         },
       })
+<<<<<<< HEAD
       if (rresponse.data.success === true) {
         setDataHospital(rresponse.data.Hospital_Details)
       }
@@ -422,6 +438,18 @@ function PatientDetail() {
   useEffect(() => {
     getdataApi()
   }, [])
+=======
+      if(rresponse.data.success===true){
+        setDataHospital(rresponse.data.Hospital_Details)
+      }
+  } catch (error) {
+    console.log(error)
+  }
+}
+  useEffect(()=>{
+    getdataApi()
+  },[])
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
 
   const onChangeFile = (e, fieldName) => {
     const file = e.target.files[0];
@@ -757,7 +785,11 @@ function PatientDetail() {
 
       if (response.data.success === true) {
         handleClose10();
+<<<<<<< HEAD
         Swal.fire("Report Added Successfully!", "", "success");
+=======
+         Swal.fire("Report Added Successfully!", "", "success");
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
         // toast.success("Report Added Successfully");
       }
       console.log("Upload successful:", response.data);
@@ -786,7 +818,11 @@ function PatientDetail() {
                           <img src={profile} className="pro-img" />
                         </div>
                         {/* <button class="image-change" type="button"> */}
+<<<<<<< HEAD
                         {/* <i class="fa fa-camera" aria-hidden="true"></i> */}
+=======
+                          {/* <i class="fa fa-camera" aria-hidden="true"></i> */}
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
                         {/* </button> */}
                         <input
                           type="file"
@@ -987,6 +1023,7 @@ function PatientDetail() {
                                 </div>
                               </div>
                               <hr></hr>
+<<<<<<< HEAD
                               <div className="row">
                                 <div className="col-md-6">
                                   <div className="service-list">
@@ -996,23 +1033,45 @@ function PatientDetail() {
                                     <li>
                                       <div className="row">
                                         <div className="col-sm-3">
+=======
+                              <div className="d-flex">
+                                <div className="col-6">
+                                  <h5>Treatment</h5>
+                                  <div className="service-list col-6"></div>
+                                  <ul>
+                                    <li>
+                                      <div className="row">
+                                        <div className="col-sm-2">
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
                                           <div className="para-main-div">
                                             <h6>Name:</h6>
                                           </div>
                                         </div>
+<<<<<<< HEAD
                                         <div className="col-sm-5">
+=======
+                                        <div className="col-sm-2">
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
                                           <div className="para-main-div">
                                             <p>{info.treatment_name}</p>
                                           </div>
                                         </div>
                                       </div>
                                       <div className="row">
+<<<<<<< HEAD
                                         <div className="col-sm-3">
+=======
+                                        <div className="col-sm-2">
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
                                           <div className="para-main-div">
                                             <h6>Charge:</h6>
                                           </div>
                                         </div>
+<<<<<<< HEAD
                                         <div className="col-sm-5">
+=======
+                                        <div className="col-sm-2">
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
                                           <div className="para-main-div">
                                             <p>{info.treatment_course_fee}</p>
                                           </div>
@@ -1030,24 +1089,40 @@ function PatientDetail() {
                                         <>
                                           <li>
                                             <div className="row">
+<<<<<<< HEAD
                                               <div className="col-sm-3">
+=======
+                                              <div className="col-sm-2">
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
                                                 <div className="para-main-div">
                                                   <h6>Name:</h6>
                                                 </div>
                                               </div>
+<<<<<<< HEAD
                                               <div className="col-sm-5">
+=======
+                                              <div className="col-sm-2">
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
                                                 <div className="para-main-div">
                                                   <p>{item.hospital_Name}</p>
                                                 </div>
                                               </div>
                                             </div>
                                             <div className="row">
+<<<<<<< HEAD
                                               <div className="col-sm-3">
+=======
+                                              <div className="col-sm-2">
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
                                                 <div className="para-main-div">
                                                   <h6>Charge:</h6>
                                                 </div>
                                               </div>
+<<<<<<< HEAD
                                               <div className="col-sm-5">
+=======
+                                              <div className="col-sm-2">
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
                                                 <div className="para-main-div">
                                                   <p>{item.hospital_charge}</p>
                                                 </div>
@@ -1059,6 +1134,7 @@ function PatientDetail() {
                                     })}
                                   </ul>
                                   <div className="service-list">
+<<<<<<< HEAD
                                     <h6>Free Services</h6>
                                   </div>
                                   <ul className="mb-2">
@@ -1125,6 +1201,8 @@ function PatientDetail() {
                                 </div>
                                 <div className="col-md-6">
                                   <div className="service-list">
+=======
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
                                     <h6>Appointment</h6>
                                   </div>
                                   <ul className="mb-2">
@@ -1134,28 +1212,48 @@ function PatientDetail() {
                                         <>
                                           <li>
                                             <div className="row">
+<<<<<<< HEAD
                                               <div className="col-sm-3">
+=======
+                                              <div className="col-sm-2">
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
                                                 <div className="para-main-div">
                                                   <h6>ID:</h6>
                                                 </div>
                                               </div>
+<<<<<<< HEAD
                                               <div className="col-sm-5">
+=======
+                                              <div className="col-sm-2">
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
                                                 <div className="para-main-div">
                                                   <p>{item.appointmentId}</p>
                                                 </div>
                                               </div>
                                             </div>
                                             <div className="row">
+<<<<<<< HEAD
                                               <div className="col-sm-3">
+=======
+                                              <div className="col-sm-2">
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
                                                 <div className="para-main-div">
                                                   <h6>Date:</h6>
                                                 </div>
                                               </div>
+<<<<<<< HEAD
                                               <div className="col-sm-5">
                                                 <div className="para-main-div1">
                                                   <p>{item.appointment_Date}</p>
                                                   {item.status ===
                                                     "Complete" ? (
+=======
+                                              <div className="col-sm-2">
+                                                <div className="para-main-div1">
+                                                  <p>{item.appointment_Date}</p>
+                                                  {item.status ===
+                                                  "Complete" ? (
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
                                                     <p>{item.status}</p>
                                                   ) : (
                                                     <FormControl
@@ -1169,6 +1267,7 @@ function PatientDetail() {
                                                       <Select
                                                         value={
                                                           item.status ===
+<<<<<<< HEAD
                                                             "pending"
                                                             ? "1"
                                                             : item.status ===
@@ -1181,6 +1280,20 @@ function PatientDetail() {
                                                                   "Cancelled"
                                                                   ? "4"
                                                                   : "1"
+=======
+                                                          "pending"
+                                                            ? "1"
+                                                            : item.status ===
+                                                              "Follow-Up"
+                                                            ? "2"
+                                                            : item.status ===
+                                                              "Complete"
+                                                            ? "3"
+                                                            : item.status ===
+                                                              "Cancelled"
+                                                            ? "4"
+                                                            : "1"
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
                                                         }
                                                         onChange={(e) =>
                                                           handleChangeDetails(
@@ -1221,6 +1334,7 @@ function PatientDetail() {
                                       );
                                     })}
                                   </ul>
+<<<<<<< HEAD
                                   {info?.appointments_details?.length > 0 &&
                                     info.appointments_details.map(
                                       (appointment, index) => (
@@ -1271,11 +1385,110 @@ function PatientDetail() {
                                               <div className="col-sm-5">
                                                 <div className="para-main-div">
                                                   <p>{appointment.pickup_time}</p>
+=======
+                                  <div className="service-list">
+                                    <h6>Free Services</h6>
+                                  </div>
+                                  <ul className="mb-2">
+                                    {info?.services?.map((item) => {
+                                      if (item.service_type === "Free") {
+                                        return (
+                                          <li
+                                            key={item._id || item.serviceName}
+                                          >
+                                            <div className="row">
+                                              <div className="col-sm-2">
+                                                <div className="para-main-div">
+                                                  <h6>Name:</h6>
+                                                </div>
+                                              </div>
+                                              <div className="col-sm-2">
+                                                <div className="para-main-div">
+                                                  <p>{item.serviceName}</p>
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
                                                 </div>
                                               </div>
                                             </div>
                                           </li>
+<<<<<<< HEAD
                                         </ul>
+=======
+                                        );
+                                      }
+                                      return null;
+                                    })}
+                                  </ul>
+                                  <div className="service-list">
+                                    <h6>Extra Services</h6>
+                                  </div>
+                                  <ul className="mb-2">
+                                    {info?.services?.map((item) => {
+                                      if (!item.price) return null;
+                                      return (
+                                        <li key={item._id || item.service_type}>
+                                          <div className="row">
+                                            <div className="col-sm-2">
+                                              <div className="para-main-div">
+                                                <h6>Name:</h6>
+                                              </div>
+                                            </div>
+                                            <div className="col-sm-2">
+                                              <div className="para-main-div">
+                                                <p>{item.serviceName}</p>
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div className="row">
+                                            <div className="col-sm-2">
+                                              <div className="para-main-div">
+                                                <h6>Price:</h6>
+                                              </div>
+                                            </div>
+                                            <div className="col-sm-2">
+                                              <div className="para-main-div">
+                                                <p>{item.price}</p>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </li>
+                                      );
+                                    })}
+                                  </ul>
+                                </div>
+                                <div className="col-12">
+                                  <div className="mb-3">
+                                    <h5>Appointment</h5>
+                                    {/* <p className="mx-5">{info.treatment_status}</p> */}
+                                  </div>
+                                  {info?.appointments_details?.length > 0 &&
+                                    info.appointments_details.map(
+                                      (appointment, index) => (
+                                        <div key={index}>
+                                          <div className="row">
+                                            <div className="col-sm-3 mb-2">
+                                              <h6>Vehicle Number:</h6>
+                                              <p>{appointment.vehicle_no}</p>
+                                            </div>
+                                            <div className="col-sm-3 mb-2">
+                                              <h6>Driver Name:</h6>
+                                              <p>{appointment.driver_name}</p>
+                                            </div>
+                                          </div>
+                                          <div className="row">
+                                            <div className="col-sm-3 mb-2">
+                                              <h6>Driver Contact:</h6>
+                                              <p>
+                                                {appointment.driver_contact}
+                                              </p>
+                                            </div>
+                                            <div className="col-sm-3 mb-2">
+                                              <h6>Pickup Time:</h6>
+                                              <p>{appointment.pickup_time}</p>
+                                            </div>
+                                          </div>
+                                          {/* <hr /> */}
+                                        </div>
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
                                       )
                                     )}
 
@@ -1556,6 +1769,7 @@ function PatientDetail() {
                     {kys?.length === 0
                       ? "No passport details found"
                       : kys?.map((info, index) => (
+<<<<<<< HEAD
                         <div key={index} className="card-box">
                           <div className="pass-detail">
                             <div className="img-patient">
@@ -1594,17 +1808,65 @@ function PatientDetail() {
                                     className="view-pass"
                                   >
                                     View Passport
+=======
+                          <div key={index} className="card-box">
+                            <div className="pass-detail">
+                              <div className="img-patient">
+                                <h6>Patient Image</h6>
+                                <img
+                                  src={`${image}${info.photo}`}
+                                  alt="no image"
+                                  className="rounded-circle shadow"
+                                  width="100"
+                                  height="100"
+                                />
+                              </div>
+                              <div className="id-proof">
+                                <h6>Id Proof</h6>
+                                {info.id_proof ? (
+                                  <a
+                                    href={`https://sisccltd.com/omca_crm/${info.id_proof}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="btn btn-outline-primary btn-sm"
+                                  >
+                                    View PDF
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
                                   </a>
                                 ) : (
                                   <span className="text-muted">
                                     Not Uploaded
                                   </span>
                                 )}
+<<<<<<< HEAD
                               </div>
                             </div>
                           </div>
                         </div>
                       ))}
+=======
+                                <div className="">
+                                  <h6>Passport</h6>
+                                  {info.passport ? (
+                                    <a
+                                      href={`https://sisccltd.com/omca_crm/${info.passport}`}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="view-pass"
+                                    >
+                                      View Passport
+                                    </a>
+                                  ) : (
+                                    <span className="text-muted">
+                                      Not Uploaded
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
                   </div>
                 </div>
               </div>
@@ -1908,9 +2170,15 @@ function PatientDetail() {
             </div>
           </div>
         </div>
+<<<<<<< HEAD
       </div >
       {/* add-service-modal-start */}
       < React.Fragment >
+=======
+      </div>
+      {/* add-service-modal-start */}
+      <React.Fragment>
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
         <Dialog fullWidth maxWidth="sm" open={openModal} onClose={closeModal}>
           <div className="main-card-header">
             <div className="note-hd">
@@ -2005,7 +2273,11 @@ function PatientDetail() {
             </Box>
           </DialogContent>
         </Dialog>
+<<<<<<< HEAD
       </React.Fragment >
+=======
+      </React.Fragment>
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
       {/* add-service-modal-end */}
       {/* add-hospital-modal-start */}
       <React.Fragment>
@@ -2239,6 +2511,7 @@ function PatientDetail() {
                       className="form-control"
                       onChange={(e) => setPickuptime(e.target.value)}
                       value={pickuptime}
+<<<<<<< HEAD
                     // min={new Date().toISOString().split("T")[0]}
                     />
                     <span style={{ color: "red" }}>
@@ -2248,6 +2521,17 @@ function PatientDetail() {
                         ? "*Please Select Pickup Time"
                         : ""}
                     </span>
+=======
+                      // min={new Date().toISOString().split("T")[0]}
+                    />
+                    <span style={{ color: "red" }}>
+
+                   
+                    {appointErr && !pickuptime
+                        ? "*Please Select Pickup Time"
+                        : ""}
+                         </span>
+>>>>>>> 16b7e5b1506ed17f5cda962e2afb718fce836af9
                     {/* <span style={{ color: "red" }}>
                       {appointErr && !note ? "*Please Enter Your date" : ""}
                     </span> */}
