@@ -205,14 +205,6 @@ export default function AddTreatments() {
         (value) =>
           value && ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type)
       ),
-
-    categories: Yup.array()
-      .of(
-        Yup.object().shape({
-          category_name: Yup.string().required('Category name is required'),
-        })
-      )
-      .min(1, 'At least one category is required'),
   });
 
   return (
@@ -239,7 +231,7 @@ export default function AddTreatments() {
               course_name: '',
               course_price: '',
               icon_image: null,
-              categories: [],
+             
             }}
             validationSchema={basicSchema}
             onSubmit={async (values, { setSubmitting }) => {
@@ -248,10 +240,6 @@ export default function AddTreatments() {
                 formData.append('course_name', values.course_name);
                 formData.append('course_price', values.course_price);
                 formData.append('icon_image', values.icon_image);
-
-                values.categories.forEach((cat, i) =>
-                  formData.append(`categories[${i}]`, cat.category_name)
-                );
 
                 const result = await dispatch(AddTeatment(formData)).unwrap();
                 Swal.fire('Treatments added successfully!', '', 'success');
@@ -337,63 +325,7 @@ export default function AddTreatments() {
                   </div>
 
                   {/* Categories */}
-                  <div className="col-sm-12">
-                    <div className="field-set1">
-                      <label>
-                        Categories<span className="text-danger">*</span>
-                      </label>
-
-                      {values.categories.map((category, index) => (
-                        <div
-                          key={index}
-                          style={{
-                            display: 'flex',
-                            marginBottom: '15px',
-                            alignItems: 'center',
-                          }}
-                        >
-                          <Field
-                            type="text"
-                            className="form-control"
-                            name={`categories.${index}.category_name`}
-                            placeholder="Enter Category Name"
-                          />
-                          <ErrorMessage
-                            name={`categories.${index}.category_name`}
-                            component="div"
-                            style={{ color: 'red', marginLeft: '10px' }}
-                          />
-                          <button
-                            type="button"
-                            onClick={() => {
-                              const updatedCategories = values.categories.filter(
-                                (_, i) => i !== index
-                              );
-                              setFieldValue('categories', updatedCategories);
-                            }}
-                            className="submit-btn ml-4"
-                          >
-                            Remove
-                          </button>
-                        </div>
-                      ))}
-
-                      <div className="d-flex">
-                        <div className="mr-4">
-                          <button
-                            type="button"
-                            onClick={() =>
-                              setFieldValue('categories', [
-                                ...values.categories,
-                                { category_name: '' },
-                              ])
-                            }
-                            className="submit-btn"
-                          >
-                            Add Category
-                          </button>
-                        </div>
-                        <div>
+                     <div>
                           <button
                             type="submit"
                             className="submit-btn"
@@ -402,9 +334,6 @@ export default function AddTreatments() {
                             Submit
                           </button>
                         </div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </Form>
             )}

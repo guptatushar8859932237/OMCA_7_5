@@ -422,10 +422,18 @@ export default function Hospitals() {
               className="fa-solid fa-pen-to-square"
               onClick={(e) => EditButton(e, info.hospitalId)}
             ></i>
-            <i
+            {/* <i
               className="fa-solid fa-trash"
               onClick={(e) => handledelet(e, info.hospitalId)}
-            ></i>
+            ></i> */}
+             {localStorage.getItem("Role") === "Admin" ? (
+                                  <i
+                                    className="fa-solid fa-trash"
+                                    onClick={(e) => handledelet(e, info.hospitalId)}
+                                  ></i>
+                                ) : (
+                                  ""
+                                )}
           </TableCell>
         </TableRow>
       ))

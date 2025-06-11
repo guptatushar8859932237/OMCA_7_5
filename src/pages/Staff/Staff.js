@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import { GetAllStaffUser } from "../../reducer/StaffSlice";
-import { image } from "../../Basurl/Baseurl";
+import { baseurl, image } from "../../Basurl/Baseurl";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -19,6 +19,7 @@ import Swal from "sweetalert2";
 import TextField from "@mui/material/TextField";
 import { DeleteStaff } from "../../reducer/StaffSlice";
 import { Pagination, Stack } from "@mui/material";
+import axios from "axios";
 export default function Staff() {
   const navigate = useNavigate();
   const [page, setPage] = useState(0);
@@ -72,10 +73,10 @@ export default function Staff() {
         typeof err === "string"
           ? err
           : typeof err?.message === "string"
-            ? err.message
-            : typeof err?.message?.message === "string"
-              ? err.message.message
-              : JSON.stringify(err);
+          ? err.message
+          : typeof err?.message?.message === "string"
+          ? err.message.message
+          : JSON.stringify(err);
       Swal.fire({
         title: "Error!",
         text: errorMessage,
@@ -128,6 +129,36 @@ export default function Staff() {
         }
       });
   };
+
+  const handleSampleFile = async () => {
+    try {
+      const response = await axios.get(
+        `${baseurl}export_staffs`,
+        {
+          responseType: "blob", // Important for downloading files
+        }
+      );
+      console.log(response.data);
+      // Create a downloadable link
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "Sample_Enquiry.xlsx"); // File name
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      return response.data; // Success response
+    } catch (err) {
+      console.error(
+        "Error downloading the sample file:",
+        err.response?.data?.message || err.message
+      );
+      // Handle error properly or throw
+      throw err;
+    }
+  };
+
   return (
     <>
       <div className="page-wrapper">
@@ -147,25 +178,34 @@ export default function Staff() {
                       id="outlined-size-small"
                       size="small"
                       InputLabelProps={{ shrink: true }}
-                    // value={filterValue}
-                    // onChange={(e) => handleFilter(e)}
-                    // InputProps={{
-                    //   endAdornment: (
-                    //     <InputAdornment position="end" className="input-set">
-                    //       {filterValue && (
-                    //         <IconButton onClick={handleClearFilter} edge="end">
-                    //           <ClearIcon />
-                    //         </IconButton>
-                    //       )}
-                    //     </InputAdornment>
-                    //   ),
-                    // }}
+                      // value={filterValue}
+                      // onChange={(e) => handleFilter(e)}
+                      // InputProps={{
+                      //   endAdornment: (
+                      //     <InputAdornment position="end" className="input-set">
+                      //       {filterValue && (
+                      //         <IconButton onClick={handleClearFilter} edge="end">
+                      //           <ClearIcon />
+                      //         </IconButton>
+                      //       )}
+                      //     </InputAdornment>
+                      //   ),
+                      // }}
                     />
                   </div>
                   <div className="">
                     <Link to="/Admin/add-staff" className="add-button">
-                      <i className="fa fa-plus"></i> New Staff
+                      <i className="fa fa-plus mx-1"></i> New Staff
                     </Link>
+                    <button
+                      onClick={handleSampleFile}
+                      className="add-button ms-2"
+                    >
+                      <span>
+                        <i className="fa fa-file mx-1"></i>
+                      </span>
+                      Sample file
+                    </button>
                   </div>
                 </div>
               </div>
@@ -261,10 +301,18 @@ export default function Staff() {
                                     className="fa-solid fa-pen-to-square"
                                     onClick={(e) => EditButton(e, info._id)}
                                   ></i>
-                                  <i
+                                  {/* <i
                                     className="fa-solid fa-trash"
                                     onClick={(e) => handledelet(e, info._id)}
-                                  ></i>
+                                  ></i> */}
+                                  {localStorage.getItem("Role") === "Admin" ? (
+                                    <i
+                                      className="fa-solid fa-trash"
+                                      onClick={(e) => handledelet(e, info._id)}
+                                    ></i>
+                                  ) : (
+                                    ""
+                                  )}
                                 </TableCell>
                                 {/* <TableCell align="left" className="dropdown dropdown-action"> <a href="#" className="action-icon dropdown-toggle" data-toggle="dropdown"
                                   aria-expanded="false"><i className="fa fa-ellipsis-v"></i></a>
@@ -284,7 +332,7 @@ export default function Staff() {
                         page={page + 1}
                         onChange={(event, value) => setPage(value - 1)}
                         shape="rounded"
-                        className='page-item'
+                        className="page-item"
                       />
                     </Stack>
                     {/* <TablePagination

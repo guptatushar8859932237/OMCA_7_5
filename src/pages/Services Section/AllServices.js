@@ -321,7 +321,6 @@ export default function AllServices() {
   const [filterValue, setFilterValue] = useState("");
   const [searchApiData, setSearchApiData] = useState([]);
   const [activeToggleLoading, setActiveToggleLoading] = useState(null);
-  
 
   const { Service, loading, error } = useSelector((state) => state.Service);
 
@@ -352,18 +351,20 @@ export default function AllServices() {
 
   const handleDelete = async (e, serviceId) => {
     e.preventDefault();
-    const response = await axios.delete(`${baseurl}delete_service/${serviceId}`, {
-      headers: {
-        "Authorization": `Bearer ${localStorage.getItem("token")}`,
-        "Content-Type": "application/json",
-
-      },
-    })
+    const response = await axios.delete(
+      `${baseurl}delete_service/${serviceId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
     if (response.data.success === true) {
       await dispatch(GetAllServices());
       Swal.fire("Status!", "Status updated successfully", "success");
     } else {
-      console.log("coe error", error)
+      console.log("coe error", error);
     }
   };
 
@@ -468,10 +469,7 @@ export default function AllServices() {
                       endAdornment: (
                         <InputAdornment position="end" className="input-set">
                           {filterValue && (
-                            <IconButton
-                              onClick={handleClearFilter}
-                              edge="end"
-                            >
+                            <IconButton onClick={handleClearFilter} edge="end">
                               <ClearIcon />
                             </IconButton>
                           )}
@@ -563,7 +561,7 @@ export default function AllServices() {
                                 </a>
                               </div>
                             </TableCell> */}
-                            {/* <TableCell className="action-icon">
+                    {/* <TableCell className="action-icon">
                               <VisibilityIcon
                                 className="eye-icon"
                                 onClick={(e) => EditButton(e, info.serviceId)}
@@ -577,60 +575,81 @@ export default function AllServices() {
                         ))}
                     </TableBody> */}
                     <TableBody>
-  {rows.length > 0 && rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).length > 0 ? (
-    rows
-      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-      .map((info, i) => (
-        <TableRow key={info.serviceId}>
-          <TableCell>{page * rowsPerPage + i + 1}</TableCell>
-          <TableCell>{info.serviceId}</TableCell>
-          <TableCell>{info.serviceName}</TableCell>
-          <TableCell>{info.price}</TableCell>
-          <TableCell>{info.duration}</TableCell>
-          <TableCell>
-            <label className="active-switch">
-              <input
-                type="checkbox"
-                className="active-switch-input"
-                checked={Boolean(info.isActive)}
-                disabled={activeToggleLoading === info.serviceId}
-                onChange={() =>
-                  dataActiveInactive(info.serviceId, info.isActive)
-                }
-              />
-              <span
-                className="active-switch-label"
-                data-on="Active"
-                data-off="Inactive"
-              ></span>
-              <span className="active-switch-handle"></span>
-            </label>
-          </TableCell>
-          <TableCell className="action-icon">
-            <VisibilityIcon
-              className="eye-icon"
-              onClick={(e) => EditButton(e, info.serviceId)}
-            />
-            <i
+                      {rows.length > 0 &&
+                      rows.slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      ).length > 0 ? (
+                        rows
+                          .slice(
+                            page * rowsPerPage,
+                            page * rowsPerPage + rowsPerPage
+                          )
+                          .map((info, i) => (
+                            <TableRow key={info.serviceId}>
+                              <TableCell>
+                                {page * rowsPerPage + i + 1}
+                              </TableCell>
+                              <TableCell>{info.serviceId}</TableCell>
+                              <TableCell>{info.serviceName}</TableCell>
+                              <TableCell>{info.price}</TableCell>
+                              <TableCell>{info.duration}</TableCell>
+                              <TableCell>
+                                <label className="active-switch">
+                                  <input
+                                    type="checkbox"
+                                    className="active-switch-input"
+                                    checked={Boolean(info.isActive)}
+                                    disabled={
+                                      activeToggleLoading === info.serviceId
+                                    }
+                                    onChange={() =>
+                                      dataActiveInactive(
+                                        info.serviceId,
+                                        info.isActive
+                                      )
+                                    }
+                                  />
+                                  <span
+                                    className="active-switch-label"
+                                    data-on="Active"
+                                    data-off="Inactive"
+                                  ></span>
+                                  <span className="active-switch-handle"></span>
+                                </label>
+                              </TableCell>
+                              <TableCell className="action-icon">
+                                <VisibilityIcon
+                                  className="eye-icon"
+                                  onClick={(e) => EditButton(e, info.serviceId)}
+                                />
+                                {/* <i
               className="fa-solid fa-trash"
               onClick={(e) => handleDelete(e, info.serviceId)}
-            ></i>
-          </TableCell>
-        </TableRow>
-      ))
-  ) : (
-    <TableRow>
-      <TableCell colSpan={7} align="center">
-        No Data Found
-      </TableCell>
-    </TableRow>
-  )}
-</TableBody>
-
+            ></i> */}
+                                {localStorage.getItem("Role") === "Admin" ? (
+                                  <i
+                                    className="fa-solid fa-trash"
+                                     onClick={(e) => handleDelete(e, info.serviceId)}
+                                  ></i>
+                                ) : (
+                                  ""
+                                )}
+                              </TableCell>
+                            </TableRow>
+                          ))
+                      ) : (
+                        <TableRow>
+                          <TableCell colSpan={7} align="center">
+                            No Data Found
+                          </TableCell>
+                        </TableRow>
+                      )}
+                    </TableBody>
                   </Table>
                   <Stack spacing={2}>
                     <Pagination
-                      className='page-nation'
+                      className="page-nation"
                       count={rows.length}
                       page={page}
                       onPageChange={handleChangePage}

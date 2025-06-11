@@ -330,7 +330,7 @@
 //                               style={{ color: "red" }}
 //                             />
 //                           </div>
-//                         </div> */} 
+//                         </div> */}
 
 //                         {/* Role */}
 //                         <div className="col-sm-6">
@@ -475,15 +475,12 @@ export default function AddPatientTreatment() {
   }, []);
   const basicSchema = Yup.object().shape({
     patientId: Yup.string().required("patientId is required"),
-    treatment_course_id: Yup.string().required(
-      "Treatment course  is required"
-    ),
+    treatment_course_id: Yup.string().required("Treatment course  is required"),
     services: Yup.array()
       .of(Yup.string().required("Service ID is required"))
       .min(1, "Select at least one service"),
     totalCharge: Yup.string().required("Total Charge is required"),
     amount_paid: Yup.string().required("Amount Paid is required"),
-    paymentMethod: Yup.string().required("Payment Method is required"),
   });
 
   // const handelSubmit = async (e) => {
@@ -515,7 +512,12 @@ export default function AddPatientTreatment() {
         <div className="content">
           <div className="row">
             <div className="col-md-12">
-              <h4 className="page-title"><span><i class="fi fi-sr-angle-double-small-left"></i></span>Add Treatment</h4>
+              <h4 className="page-title">
+                <span>
+                  <i class="fi fi-sr-angle-double-small-left"></i>
+                </span>
+                Add Treatment
+              </h4>
             </div>
           </div>
           <div className="main_content">
@@ -527,6 +529,7 @@ export default function AddPatientTreatment() {
                 services: "",
                 amount_paid: "",
                 paymentMethod: "",
+                Currency: "USD",
               }}
               validationSchema={basicSchema}
               onSubmit={async (values, { setSubmitting }) => {
@@ -537,9 +540,11 @@ export default function AddPatientTreatment() {
                   ).unwrap();
 
                   Swal.fire("Treatment added successfully!", "", "success");
-                  navigate("/Admin/Patient-Detail",{state:{patientId:location?.state?.patient}});
+                  navigate("/Admin/Patient-Detail", {
+                    state: { patientId: location?.state?.patient },
+                  });
                 } catch (err) {
-        // patientId
+                  // patientId
                   console.error("Submission Error:", err);
                   Swal.fire(
                     "Error!",
@@ -555,13 +560,21 @@ export default function AddPatientTreatment() {
                   <div className="row">
                     <div className="col-sm-6">
                       <div className="field-set">
-                        <label>Patient ID<span className="text-danger">*</span></label>
-                        <Field className="form-control" type="text" name="patientId" />
+                        <label>
+                          Patient ID<span className="text-danger">*</span>
+                        </label>
+                        <Field
+                          className="form-control"
+                          type="text"
+                          name="patientId"
+                        />
                       </div>
                     </div>
                     <div className="col-sm-6">
                       <div className="field-set">
-                        <label>Treatment course<span className="text-danger">*</span></label>
+                        <label>
+                          Treatment course<span className="text-danger">*</span>
+                        </label>
                         <Autocomplete
                           disablePortal
                           options={
@@ -577,7 +590,8 @@ export default function AddPatientTreatment() {
                             setFieldValue("treatment_course_id", courseId);
                             if (courseId) {
                               try {
-                                const response = await axios.get(`${baseurl}get_treatment_course_by_id/${courseId}`,
+                                const response = await axios.get(
+                                  `${baseurl}get_treatment_course_by_id/${courseId}`,
                                   {
                                     headers: {
                                       Authorization: `Bearer ${localStorage.getItem(
@@ -587,8 +601,9 @@ export default function AddPatientTreatment() {
                                     },
                                   }
                                 );
-                                const charge = response?.data.treatment_course.course_price
-                                console.log(charge)
+                                const charge =
+                                  response?.data.treatment_course.course_price;
+                                console.log(charge);
                                 setFieldValue("totalCharge", charge);
                               } catch (error) {
                                 console.error(
@@ -598,9 +613,7 @@ export default function AddPatientTreatment() {
                               }
                             }
                           }}
-                          renderInput={(params) => (
-                            <TextField {...params} />
-                          )}
+                          renderInput={(params) => <TextField {...params} />}
                           sx={{
                             "& .MuiOutlinedInput-root": {
                               padding: "0px",
@@ -619,14 +632,26 @@ export default function AddPatientTreatment() {
                     </div>
                     <div className="col-sm-6">
                       <div className="field-set">
-                        <label>Total Charge<span className="text-danger">*</span></label>
-                        <Field className="form-control" type="type" name="totalCharge" />
-                        <ErrorMessage name="totalCharge" component="div" style={{ color: "red" }} />
+                        <label>
+                          Total Charge<span className="text-danger">*</span>
+                        </label>
+                        <Field
+                          className="form-control"
+                          type="type"
+                          name="totalCharge"
+                        />
+                        <ErrorMessage
+                          name="totalCharge"
+                          component="div"
+                          style={{ color: "red" }}
+                        />
                       </div>
                     </div>
                     <div className="col-sm-6">
                       <div className="field-set">
-                        <label>Services<span className="text-danger">*</span></label>
+                        <label>
+                          Services<span className="text-danger">*</span>
+                        </label>
                         <Autocomplete
                           multiple
                           options={Service.map(
@@ -644,10 +669,7 @@ export default function AddPatientTreatment() {
                             setFieldValue("services", selectedIds); // Set the selected IDs
                           }}
                           renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              label="Select Services"
-                            />
+                            <TextField {...params} label="Select Services" />
                           )}
                           value={personName} // Display the selected names
                           size="small"
@@ -660,26 +682,69 @@ export default function AddPatientTreatment() {
                             },
                           }}
                         />
-                        <ErrorMessage name="services" component="div" style={{ color: "red" }} />
+                        <ErrorMessage
+                          name="services"
+                          component="div"
+                          style={{ color: "red" }}
+                        />
                       </div>
                     </div>
                     <div className="col-sm-6">
                       <div className="field-set">
-                        <label>Amount Paid<span className="text-danger">*</span></label>
-                        <Field className="form-control" type="text" name="amount_paid" />
-                        <ErrorMessage name="amount_paid" component="div" style={{ color: "red" }} />
+                        <label>
+                          Amount Paid<span className="text-danger">*</span>
+                        </label>
+                        <Field
+                          className="form-control"
+                          type="text"
+                          name="amount_paid"
+                        />
+                        <ErrorMessage
+                          name="amount_paid"
+                          component="div"
+                          style={{ color: "red" }}
+                        />
                       </div>
                     </div>
                     <div className="col-sm-6">
                       <div className="field-set">
-                        <label>Payment Method<span className="text-danger">*</span></label>
-                        <Field className="form-control" type="text" name="paymentMethod" />
-                        <ErrorMessage name="paymentMethod" component="div" style={{ color: "red" }} />
+                        <label>
+                          Currency<span className="text-danger"></span>
+                        </label>
+                        <Field
+                          className="form-control"
+                          type="text"
+                          name="Currency"
+                        />
+                        <ErrorMessage
+                          name="Currency"
+                          component="div"
+                          style={{ color: "red" }}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-sm-6">
+                      <div className="field-set">
+                        <label>
+                          Payment Method <span className="text-danger"></span>
+                        </label>
+                        <Field
+                          as="select"
+                          name="paymentMethod"
+                          className="form-control"
+                        >
+                          <option value="">Select a payment method</option>
+                          <option value="Cash">Cash</option>
+                          <option value="UPI">Online via UPI</option>
+                          <option value="Credit/Debit Card">Debit / Credit Card</option>
+                        </Field>
                       </div>
                     </div>
                   </div>
                   <div className="">
-                    <button className="submit-btn" type="submit"
+                    <button
+                      className="submit-btn"
+                      type="submit"
                       disabled={isSubmitting || loading}
                     >
                       {loading ? "Submitting..." : "Submit"}

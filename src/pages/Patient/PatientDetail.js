@@ -40,9 +40,8 @@ function PatientDetail() {
   const { PatientTreatments, loading, error } = useSelector(
     (state) => state.PatientTreatments
   );
-  // const { Service } = useSelector((state) => state.Service)
-  // const [serviseprice, setServisPrice] = useState("")
   const [ispatient, setIspatient] = useState("");
+  const [datedata, setDatedata] = useState("");
   const [tretment, setTretment] = useState([]);
   const [undadedservice, setUndadedservice] = useState([]);
   const [Service, setService] = useState([]);
@@ -53,7 +52,6 @@ function PatientDetail() {
   const [open3, setOpen3] = React.useState(false);
   const [open10, setOpen10] = React.useState(false);
   const [openModal, setOpenModal] = useState(false);
-  // const [open4, setOpen4] = React.useState(false);
   const [open5, setOpen5] = React.useState(false);
   const [note, setNote] = useState("");
   const [date, setDate] = useState();
@@ -75,9 +73,7 @@ function PatientDetail() {
   const [enqId, setEnqId] = useState("");
   const [serviceData, setServiceData] = useState([]);
   const [payment_details, setPayment_details] = useState([]);
-  // const [serviceId, setServiceId] = useState("")
   const [selectedServices, setSelectedServices] = useState([]);
-  // const [servicecurr, setServiceCurr] = useState("")
   const [chkservice, setChkservice] = useState([]);
   const [blogErr, setBlogErr] = useState(false);
   const [appointErr, setAppointErr] = useState(false);
@@ -102,7 +98,6 @@ function PatientDetail() {
       });
       const extraServices = response.data; // 👈 cleaner
       console.log("Fetched Extra Services:", extraServices); // 👈 cleaner log
-      // You can now use `extraServices` variable as you want
     } catch (error) {
       console.error("Error fetching extra services:", error);
       throw error;
@@ -112,19 +107,12 @@ function PatientDetail() {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
   };
-  // const [inputData, setInputData] = useState({
-  //   price :serviseprice
-  // });
   const ServiceData2 = useSelector((state) => state.Service.Service);
   const { hospital } = useSelector((state) => state.hospital);
   useEffect(() => {
     dispatch(GetAllHositalData());
     console.log(error, hospital);
   }, [dispatch]);
-  // useEffect(() => {
-  //   dispatch(GetAllServices())
-  //   console.log(error, Service)
-  // }, [dispatch])
   useEffect(() => {
     dispatch(GetPatientTreatments({ id: location.state.patientId }));
   }, [dispatch, location.state.patientId]);
@@ -162,21 +150,15 @@ function PatientDetail() {
   };
   const handleClickOpen2 = (e, tretmentId, listhospital) => {
     setOpen2(true);
-    // setTreatmentId(tretmentId)
-    // setIShospitalArray(listhospital)
   };
   const handleClickOpen3 = (e, tretmentId) => {
-    // alert("hello")
     setOpen3(true);
     setTreatmentId(tretmentId);
-    // setIShospitalArray(listhospital)
   };
   const handleClickOpen10 = (e, tretmentId) => {
-    // alert("hello")
     console.log(tretmentId);
     setTreatmentId(tretmentId);
     setOpen10(true);
-    // setIShospitalArray(listhospital)
   };
   const handleClose1 = () => {
     setOpen1(false);
@@ -228,18 +210,10 @@ function PatientDetail() {
   useEffect(() => {
     GetActiveService();
   }, []);
-  // const gettreatment =async() =>{
-  //   const response = await axios.get(`${baseurl}get_patient_treatment/${ispatient?.patientId}`, {
-  //     headers: {
-  //       Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //       "Content-Type": "application/json",
-  //     },
-  //   });
-  //   console.log(response.data, "treatment data")}
 
   const handlesubmitdata = async () => {
     const servipostdata = {
-      services: { serviceId: valuedata, price: data.price },
+      services: { serviceId: valuedata, price: data.price,startTime :datedata.start_date,endTime:datedata.end_date },
     };
     console.log(servipostdata, "Service Data22");
     try {
@@ -278,10 +252,7 @@ function PatientDetail() {
           },
         }
       );
-      // In JavaScript, this refers to the object that is currently executing the function.
-      //  Its value depends on how the function is called, not where it is defined. In regular functions, 
-      //  this is dynamic, while in arrow functions, this is lexically bound to the parent scope.
-      //   We can manually control this using call, apply, or bind.
+    
       console.log(response.data);
       setTreatmentuser(response.data.patient_treatments, "treatment data");
     } catch (error) {
@@ -696,6 +667,11 @@ function PatientDetail() {
       }
     });
   };
+
+  const andlechangedate =(e)=>{
+    const {name,value}=e.target
+      setDatedata({...datedata,[name]:value})
+  }
   const getapicall = (getapicall) => {
     axios
       .get(`${baseurl}get_unadded_services_for_treatment/${getapicall}`, {
@@ -1033,7 +1009,7 @@ function PatientDetail() {
                                         </div>
                                         <div className="col-sm-5">
                                           <div className="para-main-div">
-                                            <p>{info.treatment_course_fee}</p>
+                                            <p>{info.treatment_course_fee} {" "}   {info.duration}</p>
                                           </div>
                                         </div>
                                       </div>
@@ -1095,7 +1071,7 @@ function PatientDetail() {
                                               </div>
                                               <div className="col-sm-5">
                                                 <div className="para-main-div">
-                                                  <p>{item.serviceName}</p>
+                                                  <p>{item.serviceName} </p>
                                                 </div>
                                               </div>
                                             </div>
@@ -1133,7 +1109,7 @@ function PatientDetail() {
                                             </div>
                                             <div className="col-sm-5">
                                               <div className="para-main-div">
-                                                <p>{item.price}</p>
+                                                <p>{item.price}  {"  "} {item.duration}</p>
                                               </div>
                                             </div>
                                           </div>
@@ -1664,7 +1640,7 @@ function PatientDetail() {
                                       <a href="#/" className="name">
                                         {info.note}
                                       </a>
-                                      <div>date-{info.date}</div>
+                                      <div>date-{new Date(info.date).toLocaleDateString('en-GB')}</div>
                                       {/* <span className="time">treatment due payment-{info.treatment_due_payment}</span> */}
                                     </div>
                                   </div>
@@ -2006,6 +1982,40 @@ function PatientDetail() {
                       value={data.price}
                       name="price"
                       onChange={andlechange}
+                      placeholder="Enter price"
+                    />
+                  </div>
+                </Box>
+              </Box>
+              <Box sx={{ display: "flex", gap: 2 }}>
+                <Box sx={{ flex: 1 }}>
+                  <div className="field-set mb-0">
+                     <div className="field-set mb-0">
+                    <label>
+                       Start Date<span className="text-danger">*</span>
+                    </label>
+                    <input
+                      type="date"
+                      className="form-control"
+                    
+                      name="start_date"
+                      onChange={andlechangedate}
+                      placeholder="Enter price"
+                    />
+                  </div>
+                  </div>
+                </Box>
+                <Box sx={{ flex: 1 }}>
+                  <div className="field-set mb-0">
+                    <label>
+                       End Date<span className="text-danger">*</span>
+                    </label>
+                    <input
+                      type="date"
+                      className="form-control"
+                    
+                      name="end_date"
+                      onChange={andlechangedate}
                       placeholder="Enter price"
                     />
                   </div>

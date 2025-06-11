@@ -1,33 +1,22 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { useState, useEffect } from "react";
 import Paper from "@mui/material/Paper";
-import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import { useSelector, useDispatch } from "react-redux";
 import { GetAllPatients } from "../../reducer/PatientsSlice";
 import { useNavigate } from "react-router-dom";
-import { image } from "../../Basurl/Baseurl";
-import BootstrapSwitchButton from "bootstrap-switch-button-react";
 import { DeletePatient } from "../../reducer/PatientsSlice";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
 import Swal from "sweetalert2";
 import { StatusPatient } from "../../reducer/PatientsSlice";
-import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import Autocomplete from "@mui/material/Autocomplete";
 import { GetAllTreatment } from "../../reducer/TreatmentSlice";
 import axios from "axios";
 import { baseurl } from "../../Basurl/Baseurl";
-import { Padding } from "@mui/icons-material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
@@ -103,12 +92,6 @@ export default function Patient() {
       },
     });
   };
-
-  // const handledelet =(e,id)=>{
-  //   e.preventDefault();
-  //   alert("dcvdfg")
-  //   console.log(id)
-  // }
   const handledelet = (e, patientId) => {
     e.preventDefault();
 
@@ -163,18 +146,12 @@ export default function Patient() {
     e.preventDefault(); // Prevent default behavior of the event
 
     try {
-      // Dispatch the action and await its result
       const result = await dispatch(
         StatusPatient({ id: id, status: Number(seekerStatus) })
       ).unwrap();
-
-      // Show success alert
       Swal.fire("Success!", "Patient details updated successfully.", "success");
       dispatch(GetAllPatients());
-
-      // Navigate to the patients page
     } catch (err) {
-      // Handle errors and show an error alert
       Swal.fire("Error!", err?.message || "An error occurred", "error");
     }
   };
@@ -213,11 +190,9 @@ export default function Patient() {
           "error"
         );
       })
-      .finally(() => {
-        // Resetting states regardless of success or error
-      });
+      .finally(() => {});
   };
-  // console.log(searchApiData)
+
   const handleFilter = (event) => {
     if (event.target.value === "") {
       setRows(searchApiData);
@@ -252,6 +227,36 @@ export default function Patient() {
   };
 
   console.log(seekerStatus);
+
+
+const handleSampleFile = async () => {
+  try {
+    const response = await axios.get(`${baseurl}export_patients`, {
+      responseType: "blob", // ✅ Top-level key, not inside headers
+      headers: {
+        "Authorization": `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+
+    // ✅ Create a downloadable Excel file
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "Sample_Enquiry.xlsx");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    return response.data;
+  } catch (err) {
+    console.error(
+      "Error downloading the sample file:",
+      err.response?.data?.message || err.message
+    );
+    throw err;
+  }
+};
+
   return (
     <>
       <div className="page-wrapper">
@@ -262,6 +267,8 @@ export default function Patient() {
                 <div className="">
                   <h4 className="page-title mb-0">Manage Patients</h4>
                 </div>
+                <div className="d-flex">
+
                 <div className="search-btn-main">
                   <div className="mr-3">
                     <TextField
@@ -289,6 +296,14 @@ export default function Patient() {
                       }}
                     />
                   </div>
+
+                </div>
+                  <button onClick={handleSampleFile} className="add-button ">
+                        <span>
+                          <i className="fa fa-file mx-1"></i>
+                        </span>
+                        Sample file
+                      </button>
                 </div>
               </div>
             </div>
@@ -315,44 +330,11 @@ export default function Patient() {
                           <TableCell>Email</TableCell>
                           <TableCell>Country</TableCell>
                           <TableCell>Patient Disease</TableCell>
-                          {/* <TableCell align="left" style={{ minWidth: "150px", "fontWeight": "bold" }}>
-                            View
-                          </TableCell> */}
-                          {/* <TableCell align="left" style={{ minWidth: "100px", "fontWeight": "bold" }}>
-                             Status
-                          </TableCell> */}
-                          {/* <TableCell align="left" style={{ minWidth: "100px" }}>
-                    candidateCounts
-                  </TableCell> */}
+
                           <TableCell>Action</TableCell>
                         </TableRow>
                       </TableHead>
-                      {/* <TableBody>
-                        {rows
-                          .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                          .map((info, i) => {
-                            return (
-                              <TableRow
-                                role="checkbox"
-                                tabIndex={-1}
-                                key={info.code}
-                              >
-                                <TableCell>{page * rowsPerPage + i + 1}</TableCell>
-                                <TableCell> {info.patientId}</TableCell>
-                                <TableCell>{info.patient_name}</TableCell>
-                                <TableCell>{info.emergency_contact}</TableCell>
-                                <TableCell>{info.email}</TableCell>
-                                <TableCell>{info.country}</TableCell>
-                                <TableCell>{info.patient_disease.map((item) => (item.disease_name))}</TableCell>
-                                <TableCell className='action-icon'>
-                                  <VisibilityIcon className='eye-icon' onClick={(e) => PatientDetail(e, info.patientId, info.enquiryId)} />
-                                  <i className="fa-solid fa-pen-to-square" onClick={(e) => EditButton(e, info.patientId)}></i>
-                                  <i className="fa-solid fa-trash" onClick={(e) => handledelet(e, info.patientId)}></i>
-                                </TableCell>
-                              </TableRow>
-                            );
-                          })}
-                      </TableBody> */}
+
                       <TableBody>
                         {rows.length === 0 ? (
                           <TableRow>
@@ -402,12 +384,17 @@ export default function Patient() {
                                       EditButton(e, info.patientId)
                                     }
                                   ></i>
-                                  <i
-                                    className="fa-solid fa-trash"
-                                    onClick={(e) =>
-                                      handledelet(e, info.patientId)
-                                    }
-                                  ></i>
+
+                                  {localStorage.getItem("Role") === "Admin" ? (
+                                    <i
+                                      className="fa-solid fa-trash"
+                                      onClick={(e) => {
+                                        handledelet(e, info.patientId);
+                                      }}
+                                    ></i>
+                                  ) : (
+                                    ""
+                                  )}
                                 </TableCell>
                               </TableRow>
                             ))
@@ -416,24 +403,13 @@ export default function Patient() {
                     </Table>
                     <Stack spacing={2}>
                       <Pagination
-                        className='page-nation'
-                        count={rows.length}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        rowsPerPage={1}
-                        defaultPage={6}
-                        siblingCount={0}
-                      /> 
-                     </Stack>
-                    {/* <TablePagination
-                      component="div"
-                      count={rows.length}
-                      page={page}
-                      onPageChange={handleChangePage}
-                      rowsPerPage={rowsPerPage}
-                      rowsPerPageOptions={[]}
-                      onRowsPerPageChange={handleChangeRowsPerPage}
-                    /> */}
+                        className="page-nation"
+                        count={Math.ceil(rows.length / rowsPerPage)}
+                        page={page + 1}
+                        onChange={(event, value) => setPage(value - 1)}
+                        color="primary"
+                      />
+                    </Stack>
                   </TableContainer>
                 </div>
               </div>
@@ -441,20 +417,6 @@ export default function Patient() {
           </div>
         </div>
       </div>
-      {/* <div id="delete_patient" className="modal fade delete-modal" role="dialog">
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content">
-            <div className="modal-body text-center">
-              <img src="assets/img/sent.png" alt="" width="50" height="46" />
-              <h3>Are you sure want to delete this Patient?</h3>
-              <div className="m-t-20"> <a href="#" className="btn btn-white" data-dismiss="modal">Close</a>
-                <button type="submit" className="btn btn-danger">Delete</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div> */}
     </>
   );
 }

@@ -118,8 +118,30 @@ export default function Inquiry() {
       Swal.fire("Error!", err?.message || "An error occurred", "error");
     }
   };
-  const handleSampleFile = () => {
-    dispatch(EnquirySample());
+  const handleSampleFile =async () => {
+      try {
+    const response = await axios.get(`${baseurl}export_enquiries`, {
+      responseType: "blob", 
+    });
+    console.log(response.data)
+    // Create a downloadable link
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "Sample_Enquiry.xlsx"); // File name
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    return response.data; // Success response
+  } catch (err) {
+    console.error(
+      "Error downloading the sample file:",
+      err.response?.data?.message || err.message
+    );
+    // Handle error properly or throw
+    throw err;
+  }
   };
   // console.log(selectedImage)
   const handleImportFile = async (e) => {
@@ -265,7 +287,6 @@ export default function Inquiry() {
         }
       });
   };
-
   return (
     <>
       <div className="page-wrapper">
@@ -291,7 +312,11 @@ export default function Inquiry() {
                         endAdornment: (
                           <InputAdornment position="end">
                             {filterValue && (
-                              <IconButton onClick={handleClearFilter} edge="end" className="input-set">
+                              <IconButton
+                                onClick={handleClearFilter}
+                                edge="end"
+                                className="input-set"
+                              >
                                 <ClearIcon />
                               </IconButton>
                             )}
@@ -303,13 +328,25 @@ export default function Inquiry() {
                   <div className="">
                     <div className="table-top-btn">
                       <Link to="/Admin/add-Enquiry" className="add-button">
-                        <span><i className="fa fa-plus"></i></span>New Enquiry
+                        <span>
+                          <i className="fa fa-plus"></i>
+                        </span>
+                        New Enquiry
                       </Link>
-                      <button onClick={(e) => handleClickOpen3(e)} className="add-button">
-                        <span><i className="fa fa-file-excel-o"></i></span> Import Excel File
+                      <button
+                        onClick={(e) => handleClickOpen3(e)}
+                        className="add-button"
+                      >
+                        <span>
+                          <i className="fa fa-file-excel-o mx-1"></i>
+                        </span>{" "}
+                        Import Excel File
                       </button>
                       <button onClick={handleSampleFile} className="add-button">
-                        <span><i className="fa fa-file"></i></span>Sample file
+                        <span>
+                          <i className="fa fa-file"></i>
+                        </span>
+                        Sample file
                       </button>
                     </div>
                   </div>
@@ -321,8 +358,15 @@ export default function Inquiry() {
             <div className="row">
               <div className="col-md-12">
                 <div className="table-responsive">
-                  <TableContainer component={Paper} style={{ overflowX: "auto" }}>
-                    <Table stickyHeader aria-label="sticky table" className="table-no-card">
+                  <TableContainer
+                    component={Paper}
+                    style={{ overflowX: "auto" }}
+                  >
+                    <Table
+                      stickyHeader
+                      aria-label="sticky table"
+                      className="table-no-card"
+                    >
                       <TableHead>
                         <TableRow>
                           <TableCell>Sr.No.</TableCell>
@@ -346,31 +390,94 @@ export default function Inquiry() {
                             )
                             .map((info, i) => {
                               return (
-                                <TableRow role="checkbox" tabIndex={-1} key={info.code}>
-                                  <TableCell>{page * rowsPerPage + i + 1}</TableCell>
+                                <TableRow
+                                  role="checkbox"
+                                  tabIndex={-1}
+                                  key={info.code}
+                                >
+                                  <TableCell>
+                                    {page * rowsPerPage + i + 1}
+                                  </TableCell>
                                   <TableCell>{info.enquiryId}</TableCell>
                                   <TableCell>{info.name}</TableCell>
                                   <TableCell>{info.email}</TableCell>
                                   <TableCell>{info.country}</TableCell>
-                                  <TableCell>{info.emergency_contact}</TableCell>
+                                  <TableCell>
+                                    {info.emergency_contact}
+                                  </TableCell>
                                   <TableCell>{info.disease_name}</TableCell>
                                   <TableCell>
-                                    <FormControl sx={{ m: 1, minWidth: 120 }} size="small" className="cont-main">
+                                    <FormControl
+                                      sx={{ m: 1, minWidth: 120 }}
+                                      size="small"
+                                      className="cont-main"
+                                    >
                                       <Select
                                         value={
                                           seekerStatus[info.enquiryId]
                                             ? seekerStatus[info.enquiryId]
                                             : info.Enquiry_status ===
                                               "Confirmed"
-                                              ? "1"
-                                              : info.Enquiry_status === "Hold"
-                                                ? "2"
-                                                : info.Enquiry_status ===
-                                                  "Follow-Up"
-                                                  ? "3"
-                                                  : info.Enquiry_status === "Dead"
-                                                    ? "4"
-                                                    : ""
+                                            ? "1"
+                                            : info.Enquiry_status === "Hold"
+                                            ? "2"
+                                            : info.Enquiry_status ===
+                                              "Follow-Up"
+                                            ? "3"
+                                            : info.Enquiry_status === "Dead"
+                                            ? "4"
+                                            : ""
+                                        }
+                                        onChange={(e) =>
+                                          handleChange(e, info.enquiryId)
+                                        }
+                                        displayEmpty
+                                        inputProps={{
+                                          "aria-label": "Without label",
+                                        }}
+                                        className="status-direct"
+                                        renderValue={(selected) => {
+                                          switch (selected) {
+                                            case "1":
+                                              return "Confirmed";
+                                            case "2":
+                                              return "Hold";
+                                            case "3":
+                                              return "Follow-up";
+                                            case "4":
+                                              return "Closed";
+                                            default:
+                                              return "Pending"; // This shows when value is empty
+                                          }
+                                        }}
+                                      >
+                                        <MenuItem value="1">Confirmed</MenuItem>
+                                        <MenuItem value="2">Hold</MenuItem>
+                                        <MenuItem value="3">Follow-up</MenuItem>
+                                        <MenuItem value="4">Closed</MenuItem>
+                                      </Select>
+                                    </FormControl>
+
+                                    {/* <FormControl
+                                      sx={{ m: 1, minWidth: 120 }}
+                                      size="small"
+                                      className="cont-main"
+                                    >
+                                      <Select
+                                        value={
+                                          seekerStatus[info.enquiryId]
+                                            ? seekerStatus[info.enquiryId]
+                                            : info.Enquiry_status ===
+                                              "Confirmed"
+                                            ? "1"
+                                            : info.Enquiry_status === "Hold"
+                                            ? "2"
+                                            : info.Enquiry_status ===
+                                              "Follow-Up"
+                                            ? "3"
+                                            : info.Enquiry_status === "Dead"
+                                            ? "4"
+                                            : "0" // default to "Pending"
                                         }
                                         onChange={(e) =>
                                           handleChange(e, info.enquiryId)
@@ -381,58 +488,77 @@ export default function Inquiry() {
                                         }}
                                         className="status-direct"
                                       >
+                                        <MenuItem value="0">
+                                          <em>Pending</em>
+                                        </MenuItem>
                                         <MenuItem value="1">Confirmed</MenuItem>
                                         <MenuItem value="2">Hold</MenuItem>
                                         <MenuItem value="3">Follow-up</MenuItem>
                                         <MenuItem value="4">Closed</MenuItem>
                                       </Select>
-                                    </FormControl>
+                                    </FormControl> */}
                                   </TableCell>
                                   <TableCell className="action-icon">
-                                    <VisibilityIcon className="eye-icon" onClick={(e) => ViewDetail(e, info.enquiryId)} />
-                                    <i className="fa-solid fa-pen-to-square" onClick={(e) => EditButton(e, info.enquiryId)}></i>
-                                    {
-                                      localStorage.getItem('Role')==="Admin"? <i className="fa-solid fa-trash" onClick={() => { handledelete(info); }}></i> :""
-                                    }
+                                    <VisibilityIcon
+                                      className="eye-icon"
+                                      onClick={(e) =>
+                                        ViewDetail(e, info.enquiryId)
+                                      }
+                                    />
+                                    <i
+                                      className="fa-solid fa-pen-to-square"
+                                      onClick={(e) =>
+                                        EditButton(e, info.enquiryId)
+                                      }
+                                    ></i>
+                                    {localStorage.getItem("Role") ===
+                                    "Admin" ? (
+                                      <i
+                                        className="fa-solid fa-trash"
+                                        onClick={() => {
+                                          handledelete(info);
+                                        }}
+                                      ></i>
+                                    ) : (
+                                      ""
+                                    )}
                                   </TableCell>
                                   <TableCell className="action-icon">
-                                    <i class="fa-solid fa-notes-medical" onClick={(e) => handleClickOpen2(e, info.enquiryId)}></i>
+                                    <i
+                                      class="fa-solid fa-notes-medical"
+                                      onClick={(e) =>
+                                        handleClickOpen2(e, info.enquiryId)
+                                      }
+                                    ></i>
                                   </TableCell>
                                 </TableRow>
                               );
                             })
                         ) : (
                           <TableRow>
-                          <TableCell colSpan={11}>
-                            <div className="flex justify-center py-4">
-                              <p className="text-center text-gray-500">No Data Found</p>
-                            </div>
-                          </TableCell>
-                        </TableRow>
+                            <TableCell colSpan={11}>
+                              <div className="flex justify-center py-4">
+                                <p className="text-center text-gray-500">
+                                  No Data Found
+                                </p>
+                              </div>
+                            </TableCell>
+                          </TableRow>
                         )}
                       </TableBody>
                     </Table>
                     <Stack spacing={2}>
                       <Pagination
-                        className='page-nation'
+                        className="page-nation"
                         count={rows.length}
                         page={page}
                         onPageChange={handleChangePage}
                         rowsPerPage={1}
                         defaultPage={6}
-                        rowsPerPageOptions={[3,5,10]}
+                        rowsPerPageOptions={[3, 5, 10]}
                         siblingCount={0}
                       />
                     </Stack>
-                    {/* <TablePagination
-                      className=""
-                      component="div"
-                      count={rows.length}
-                      page={page}
-                      onPageChange={handleChangePage}
-                      rowsPerPage={rowsPerPage}
-                      rowsPerPageOptions={[]} // Add this line to remove the "Rows per page" dropdown
-                    /> */}
                   </TableContainer>
                 </div>
               </div>
@@ -442,7 +568,12 @@ export default function Inquiry() {
       </div>
       {/* Import-file-modal */}
       <React.Fragment>
-        <Dialog fullWidth={fullWidth} maxWidth={maxWidth} open={open3} onClose={handleClose3}>
+        <Dialog
+          fullWidth={fullWidth}
+          maxWidth={maxWidth}
+          open={open3}
+          onClose={handleClose3}
+        >
           <div className="main-card-header">
             <div className="note-hd">
               <h6>Import Excel File</h6>
@@ -465,7 +596,9 @@ export default function Inquiry() {
               <Box>
                 <form id="contact-form" className="contact-form">
                   <div className="field-set">
-                    <label>Choose File<span className="text-danger">*</span></label>
+                    <label>
+                      Choose File<span className="text-danger">*</span>
+                    </label>
                     <input
                       className="form-control"
                       type="file"
@@ -479,7 +612,13 @@ export default function Inquiry() {
                     />
                   </div>
                   <DialogActions className="submit-main">
-                    <Button type="submit" variant="contained" onClick={(e) => handleImportFile(e)}>Submit</Button>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      onClick={(e) => handleImportFile(e)}
+                    >
+                      Submit
+                    </Button>
                   </DialogActions>
                 </form>
               </Box>
@@ -488,7 +627,11 @@ export default function Inquiry() {
         </Dialog>
       </React.Fragment>
       {/* Delete-modal */}
-      <div id="delete_appointment" className="modal fade delete-modal" role="dialog">
+      <div
+        id="delete_appointment"
+        className="modal fade delete-modal"
+        role="dialog"
+      >
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-body text-center">
@@ -496,8 +639,12 @@ export default function Inquiry() {
               <h3>Are you sure want to delete this Appointment?</h3>
               <div className="m-t-20">
                 {" "}
-                <a href="#" className="btn btn-white" data-dismiss="modal">Close</a>
-                <button type="submit" className="btn btn-danger">Delete</button>
+                <a href="#" className="btn btn-white" data-dismiss="modal">
+                  Close
+                </a>
+                <button type="submit" className="btn btn-danger">
+                  Delete
+                </button>
               </div>
             </div>
           </div>
@@ -505,7 +652,12 @@ export default function Inquiry() {
       </div>
       {/* Notes-modal */}
       <React.Fragment>
-        <Dialog fullWidth={fullWidth} maxWidth={maxWidth} open={open2} onClose={handleClose2}>
+        <Dialog
+          fullWidth={fullWidth}
+          maxWidth={maxWidth}
+          open={open2}
+          onClose={handleClose2}
+        >
           <div className="main-card-header">
             <div className="note-hd">
               <h6>Create Notes</h6>
@@ -528,7 +680,9 @@ export default function Inquiry() {
               <Box>
                 <form id="contact-form">
                   <div className="field-set">
-                    <label>Notes<span className="text-danger">*</span></label>
+                    <label>
+                      Notes<span className="text-danger">*</span>
+                    </label>
                     <textarea
                       id="w3review"
                       name="discussionNotes"
@@ -539,10 +693,14 @@ export default function Inquiry() {
                       onChange={(e) => setNote(e.target.value)}
                       value={note}
                     />
-                    <span style={{ color: "red" }}>{blogErr && !note ? "Please Enter Your  note" : ""}</span>
+                    <span style={{ color: "red" }}>
+                      {blogErr && !note ? "Please Enter Your  note" : ""}
+                    </span>
                   </div>
                   <div className="field-set">
-                    <label>Date<span className="text-danger">*</span></label>
+                    <label>
+                      Date<span className="text-danger">*</span>
+                    </label>
                     <input
                       type="date"
                       id="birthday"
@@ -553,10 +711,18 @@ export default function Inquiry() {
                       value={date}
                       min={new Date().toISOString().split("T")[0]}
                     />
-                    <span style={{ color: "red" }}>{blogErr && !date ? "Please Enter Your  date" : ""}</span>
+                    <span style={{ color: "red" }}>
+                      {blogErr && !date ? "Please Enter Your  date" : ""}
+                    </span>
                   </div>
                   <DialogActions className="submit-main">
-                    <Button type="submit" variant="contained" onClick={handleNotesdata}>Submit</Button>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      onClick={handleNotesdata}
+                    >
+                      Submit
+                    </Button>
                   </DialogActions>
                 </form>
               </Box>

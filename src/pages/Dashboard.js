@@ -7,8 +7,10 @@ import { image } from "../Basurl/Baseurl";
 import { GetUserData } from "../reducer/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
+import { Navigate, NavLink, useNavigate } from "react-router-dom";
 export default function Dashboard() {
   const [arraycount, setArraycount] = useState([]);
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const { getuser, loading, error } = useSelector((state) => state.getuser);
   useEffect(() => {
@@ -65,7 +67,7 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="row">
-            <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+            <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3" style={{cursor:"pointer"}} onClick={() => navigate("/Admin/staff")}>
               <div className="dash-widget">
                 <div className="dash-widget-bg">
                   <i className="fa fa-users" aria-hidden="true"></i>
@@ -76,7 +78,7 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
-            <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+            <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3" style={{cursor:"pointer"}} onClick={() => navigate("/Admin/Inquiry")}>
               <div className="dash-widget">
                 <div className="dash-widget-bg">
                   <i className="fa fa-user-md"></i>
@@ -87,7 +89,7 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
-            <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+            <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3" style={{cursor:"pointer"}} onClick={() => navigate("/Admin/Appointments")}>
               <div className="dash-widget">
                 <div className="dash-widget-bg">
                   <i className="fa fa-calendar-check-o" aria-hidden="true"></i>
@@ -98,7 +100,7 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
-            <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+            <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3" style={{cursor:"pointer"}} onClick={() => navigate("/Admin/patients")}>
               <div className="dash-widget">
                 <div className="dash-widget-bg">
                   <i class="fas fa-user-injured"></i>
@@ -109,7 +111,7 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
-            <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+            <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3" style={{cursor:"pointer"}} onClick={() => navigate("/Admin/Earnings")}>
               <div className="dash-widget">
                 <div className="dash-widget-bg">
                   <i className="fa fa-clipboard" aria-hidden="true"></i>
@@ -120,7 +122,7 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
-            <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+            <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3" style={{cursor:"pointer"}} onClick={() => navigate("/Admin/Hospitals")}>
               <div className="dash-widget">
                 <div className="dash-widget-bg">
                   <i class="fa-solid fa-hospital"></i>
@@ -131,7 +133,7 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
-            <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+            <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3" style={{cursor:"pointer"}} onClick={() => navigate("/Admin/Earnings")}>
               <div className="dash-widget">
                 <div className="dash-widget-bg">
                   <i
@@ -163,7 +165,7 @@ export default function Dashboard() {
                 </div>
               </div>
             </div> */}
-            <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+            <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3" style={{cursor:"pointer"}} onClick={() => navigate("/Admin/Services")}>
               <div className="dash-widget">
                 <div className="dash-widget-bg">
                   <i class="fa-solid fa-server"></i>
@@ -185,7 +187,7 @@ export default function Dashboard() {
             {arraycount &&
               arraycount.length > 0 &&
               arraycount.map((item, index) => (
-                <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3" key={index}>
+                <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3" key={index} style={{cursor:"pointer"}} onClick={() => navigate("/Admin/Treatments")}>
                   <div className="dash-widget">
                     <div className="dash-bg">
                       <i ><img className="dash-imge" src={`${image}${item.image}`} /></i>

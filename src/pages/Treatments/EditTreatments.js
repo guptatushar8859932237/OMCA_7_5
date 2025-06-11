@@ -295,12 +295,7 @@ export default function EditTreatments() {
   const basicSchema = Yup.object().shape({
     course_name: Yup.string().required('Course name is required'),
     course_price: Yup.string().required('Course price is required'),
-    categories: Yup.array().of(
-      Yup.object().shape({
-        category_name: Yup.string().required('Category name is required'),
-        category_id: Yup.string(),
-      })
-    ),
+   
     icon_image: Yup.mixed(), // Optional image
   });
 
@@ -322,7 +317,6 @@ export default function EditTreatments() {
             initialValues={{
               course_name: editTreatment?.course_name || '',
               course_price: editTreatment?.course_price?.toString() || '',
-              categories: editTreatment?.categories || [{ category_name: '', category_id: '' }],
               icon_image: null,
             }}
             validationSchema={basicSchema}
@@ -334,10 +328,6 @@ export default function EditTreatments() {
                 if (values.icon_image) {
                   formData.append("icon_image", values.icon_image);
                 }
-                values.categories.forEach((cat, index) => {
-                  formData.append(`categories[${index}].category_name`, cat.category_name);
-                  formData.append(`categories[${index}].category_id`, cat.category_id);
-                });
 
                 await dispatch(EditTreatmentssection({ id: editTreatment.course_id, data: formData })).unwrap();
                 Swal.fire("Success!", "Treatment updated successfully.", "success");
@@ -366,7 +356,7 @@ export default function EditTreatments() {
                     </div>
                   </div>
                   <div className="col-sm-12">
-                    <div className="field-set">
+                    {/* <div className="field-set">
                       <label>Categories<span className="text-danger">*</span></label>
                       <FieldArray name="categories">
                         {({ remove, push }) => (
@@ -400,19 +390,13 @@ export default function EditTreatments() {
                             ))}
                             <div className="d-flex">
                               <div className="mr-4">
-                                <button
-                                  type="button"
-                                  onClick={() => push({ category_name: '', category_id: '' })}
-                                  className="submit-btn"
-                                >
-                                  Add Category
-                                </button>
+                               
                               </div>
                             </div>
                           </>
                         )}
                       </FieldArray>
-                    </div>
+                    </div> */}
                   </div>
                   <div className="col-sm-12">
                     <div className="field-set">

@@ -235,7 +235,7 @@ export default function EnquiryDetail() {
                                         <a href="#/" className="name">
                                           {info.note}
                                         </a>
-                                        <div>date-{info.date}</div>
+                                        <div>date-{new Date(info.date).toLocaleDateString("en-GB")}</div>
                                         {/* <span className="time">treatment due payment-{info.treatment_due_payment}</span> */}
                                       </div>
                                     </div>
