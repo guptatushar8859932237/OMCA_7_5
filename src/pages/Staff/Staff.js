@@ -61,7 +61,7 @@ export default function Staff() {
     try {
       const newState = currentState === 1 ? 0 : 1; // Invert status
       const result = await dispatch(ActiveStaffUser({ id: id })).unwrap();
-      dispatch(GetAllStaffUser()); // Refetch data after API call
+      dispatch(GetAllStaffUser()); 
       Swal.fire(
         "Status!",
         newState === 1 ? "Activate." : "DeActivate.",
@@ -99,7 +99,6 @@ export default function Staff() {
     swalWithBootstrapButtons
       .fire({
         title: "Are you sure?",
-        // text: "You won't be able to revert this!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "Yes, delete it!",
@@ -123,7 +122,6 @@ export default function Staff() {
         } else if (result.dismiss === Swal.DismissReason.cancel) {
           swalWithBootstrapButtons.fire({
             title: "Cancelled",
-            // text: "Hospital data is safe :)",
             icon: "error",
           });
         }

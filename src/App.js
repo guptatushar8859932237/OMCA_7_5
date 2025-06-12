@@ -47,6 +47,7 @@ import { ResetPassword } from "./pages/authentication/ResetPassword";
 import EnquiryDetail from "./pages/Enquiry/EnquiryDetail";
 import Newpermission from "./pages/Permission/Newpermission";
 import EditService from "./pages/Services Section/EditService";
+import Totaluser from "./pages/Hospitals/Totaluser";
 function App() {
   //   const [count, setCount] = useState(0);
 
@@ -162,6 +163,11 @@ function App() {
               />
               <Route
                 index
+                path="/Admin/totalUser"
+                element={<Totaluser />}
+              />
+              <Route
+                index
                 path="/Admin/edit-hospitals"
                 element={<EditHospitals />}
               />
@@ -187,8 +193,6 @@ function App() {
                 element={<EnquiryDetail />}
               />
             </Route>
-            {/* </div>
-        </div> */}
           </Routes>
         </Router>
       </Provider>

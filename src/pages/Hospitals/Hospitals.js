@@ -235,6 +235,7 @@ export default function Hospitals() {
                           <TableCell>Location</TableCell>
                           <TableCell>Hospital Code</TableCell>
                           <TableCell>Contact</TableCell>
+                          <TableCell>Num. of Patient</TableCell>
                           <TableCell>Status</TableCell>
                           {/* <TableCell align="left" style={{ minWidth: "100px" }}>
                     candidateCounts
@@ -376,76 +377,103 @@ export default function Hospitals() {
                                     <a className="dropdown-item" data-toggle="modal" data-target="#delete_patient" onClick={(e) => handledelet(e, info.hospitalId)}><i
                                       className="fa fa-trash-o m-r-5"></i> Delete</a>
                                   </div></TableCell> */}
-                              {/* </TableRow>
+                      {/* </TableRow>
                             );
                           })}
                       </TableBody> */}
                       <TableBody>
-  {rows.length > 0 &&
-  rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).length > 0 ? (
-    rows
-      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-      .map((info, i) => (
-        <TableRow role="checkbox" tabIndex={-1} key={info.code}>
-          <TableCell>{page * rowsPerPage + i + 1}</TableCell>
-          <TableCell>
-            <img
-              src={`${image}${info.hospitalImage}`}
-              className="hos-img"
-              alt=""
-            />
-          </TableCell>
-          <TableCell>{info.hospitalName}</TableCell>
-          <TableCell>{info.location}</TableCell>
-          <TableCell>{info.hospitalCode}</TableCell>
-          <TableCell>{info.contact}</TableCell>
-          <TableCell>
-            <label className="active-switch">
-              <input
-                className="active-switch-input "
-                type="checkbox"
-                checked={info.status === 1}
-                onChange={(e) =>
-                  handleStatusToggle(info.hospitalId, e.target.checked)
-                }
-              />
-              <span
-                className="active-switch-label "
-                data-on="Active"
-                data-off="Inactive"
-              ></span>
-              <span className="active-switch-handle"></span>
-            </label>
-          </TableCell>
-          <TableCell className="action-icon">
-            <i
-              className="fa-solid fa-pen-to-square"
-              onClick={(e) => EditButton(e, info.hospitalId)}
-            ></i>
-            {/* <i
+                        {rows.length > 0 &&
+                        rows.slice(
+                          page * rowsPerPage,
+                          page * rowsPerPage + rowsPerPage
+                        ).length > 0 ? (
+                          rows
+                            .slice(
+                              page * rowsPerPage,
+                              page * rowsPerPage + rowsPerPage
+                            )
+                            .map((info, i) => {
+                              console.log(info)
+                              return(
+                                <>
+                                <TableRow
+                                role="checkbox"
+                                tabIndex={-1}
+                                key={info.code}
+                              >
+                                <TableCell>
+                                  {page * rowsPerPage + i + 1}
+                                </TableCell>
+                                <TableCell>
+                                  <img
+                                    src={`${image}${info.hospitalImage}`}
+                                    className="hos-img"
+                                    alt=""
+                                  />
+                                </TableCell>
+                                <TableCell>{info.hospitalName}</TableCell>
+                                <TableCell>{info.location}</TableCell>
+                                <TableCell>{info.hospitalCode}</TableCell>
+                                <TableCell>{info.contact}</TableCell>
+                                <TableCell className="text-primary" style={{cursor:"pointer"}} onClick={()=>{navigate('/Admin/totalUser',{state:{data:info.hospitalId}}
+                                )}}>{info.patientCount}</TableCell>
+                                <TableCell>
+                                  <label className="active-switch">
+                                    <input
+                                      className="active-switch-input "
+                                      type="checkbox"
+                                      checked={info.status === 1}
+                                      onChange={(e) =>
+                                        handleStatusToggle(
+                                          info.hospitalId,
+                                          e.target.checked
+                                        )
+                                      }
+                                    />
+                                    <span
+                                      className="active-switch-label "
+                                      data-on="Active"
+                                      data-off="Inactive"
+                                    ></span>
+                                    <span className="active-switch-handle"></span>
+                                  </label>
+                                </TableCell>
+                                <TableCell className="action-icon">
+                                  <i
+                                    className="fa-solid fa-pen-to-square"
+                                    onClick={(e) =>
+                                      EditButton(e, info.hospitalId)
+                                    }
+                                  ></i>
+                                  {/* <i
               className="fa-solid fa-trash"
               onClick={(e) => handledelet(e, info.hospitalId)}
             ></i> */}
-             {localStorage.getItem("Role") === "Admin" ? (
-                                  <i
-                                    className="fa-solid fa-trash"
-                                    onClick={(e) => handledelet(e, info.hospitalId)}
-                                  ></i>
-                                ) : (
-                                  ""
-                                )}
-          </TableCell>
-        </TableRow>
-      ))
-  ) : (
-    <TableRow>
-      <TableCell colSpan={8} align="center">
-        No Data Found
-      </TableCell>
-    </TableRow>
-  )}
-</TableBody>
-
+                                  {localStorage.getItem("Role") === "Admin" ? (
+                                    <i
+                                      className="fa-solid fa-trash"
+                                      onClick={(e) =>
+                                        handledelet(e, info.hospitalId)
+                                      }
+                                    ></i>
+                                  ) : (
+                                    ""
+                                  )}
+                                </TableCell>
+                              </TableRow>
+                                </>
+                              )
+                            }
+                              
+                            )
+                        ) : (
+                          <TableRow>
+                            <TableCell colSpan={8} align="center">
+                              No Data Found
+                            </TableCell>
+                          </TableRow>
+                        )}
+                      </TableBody>
                     </Table>
                     <Stack spacing={2} alignItems="end" marginTop={2}>
                       <Pagination
@@ -453,7 +481,7 @@ export default function Hospitals() {
                         page={page + 1}
                         onChange={(event, value) => setPage(value - 1)}
                         shape="rounded"
-                        className='page-item'
+                        className="page-item"
                       />
                     </Stack>
                     {/* <TablePagination
