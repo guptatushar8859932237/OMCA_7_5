@@ -120,7 +120,9 @@ export default function Inquiry() {
   };
   const handleSampleFile =async () => {
       try {
-    const response = await axios.get(`${baseurl}export_enquiries`, {
+    const response = await axios.get(`${baseurl}export_enquiries`,{  headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },}, {
       responseType: "blob", 
     });
     console.log(response.data)
@@ -346,7 +348,7 @@ export default function Inquiry() {
                         <span>
                           <i className="fa fa-file"></i>
                         </span>
-                        Sample file
+                        Export File
                       </button>
                     </div>
                   </div>
@@ -377,7 +379,7 @@ export default function Inquiry() {
                           <TableCell>Contact</TableCell>
                           <TableCell>Disease name</TableCell>
                           <TableCell>Status</TableCell>
-                          <TableCell>Action</TableCell>
+                          <TableCell>Actions</TableCell>
                           <TableCell>Notes</TableCell>
                         </TableRow>
                       </TableHead>
@@ -548,17 +550,14 @@ export default function Inquiry() {
                       </TableBody>
                     </Table>
                     <Stack spacing={2}>
-                      <Pagination
-                        className="page-nation"
-                        count={rows.length}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        rowsPerPage={1}
-                        defaultPage={6}
-                        rowsPerPageOptions={[3, 5, 10]}
-                        siblingCount={0}
-                      />
-                    </Stack>
+                                         <Pagination
+                                           className="page-nation"
+                                           count={Math.ceil(rows.length / rowsPerPage)}
+                                           page={page + 1}
+                                           onChange={(event, value) => setPage(value - 1)}
+                                           color="primary"
+                                         />
+                                        </Stack>
                   </TableContainer>
                 </div>
               </div>

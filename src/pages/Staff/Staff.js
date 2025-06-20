@@ -202,7 +202,7 @@ export default function Staff() {
                       <span>
                         <i className="fa fa-file mx-1"></i>
                       </span>
-                      Sample file
+                      Export File
                     </button>
                   </div>
                 </div>

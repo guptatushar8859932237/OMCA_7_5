@@ -302,7 +302,7 @@ const handleSampleFile = async () => {
                         <span>
                           <i className="fa fa-file mx-1"></i>
                         </span>
-                        Sample file
+                        Export File
                       </button>
                 </div>
               </div>
@@ -327,6 +327,7 @@ const handleSampleFile = async () => {
                           <TableCell>Patient Id</TableCell>
                           <TableCell>Patient Name</TableCell>
                           <TableCell>Emergency contact</TableCell>
+                          <TableCell>Date</TableCell>
                           <TableCell>Email</TableCell>
                           <TableCell>Country</TableCell>
                           <TableCell>Patient Disease</TableCell>
@@ -360,6 +361,7 @@ const handleSampleFile = async () => {
                                 <TableCell>{info.patientId}</TableCell>
                                 <TableCell>{info.patient_name}</TableCell>
                                 <TableCell>{info.emergency_contact}</TableCell>
+                                <TableCell>{new Date(info.createdAt).toLocaleDateString("en-GB")}</TableCell>
                                 <TableCell>{info.email}</TableCell>
                                 <TableCell>{info.country}</TableCell>
                                 <TableCell>

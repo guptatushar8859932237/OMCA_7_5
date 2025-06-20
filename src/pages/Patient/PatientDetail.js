@@ -26,6 +26,15 @@ import MenuItem from "@mui/material/MenuItem";
 import axios from "axios";
 import { AddNewTretmentPayment } from "../../reducer/PatientTreatmentSlice";
 import { toast, ToastContainer } from "react-toastify";
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 
 function PatientDetail() {
   const navigate = useNavigate();
@@ -45,11 +54,13 @@ function PatientDetail() {
   const [tretment, setTretment] = useState([]);
   const [undadedservice, setUndadedservice] = useState([]);
   const [Service, setService] = useState([]);
+  const [reportdataget, setReportdataget] = useState([]);
   const [iniData, setIniData] = useState({});
   const [open, setOpen] = React.useState(false);
   const [open1, setOpen1] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
   const [open3, setOpen3] = React.useState(false);
+  const [notesModal, setNotesModal] = useState(false);
   const [open10, setOpen10] = React.useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [open5, setOpen5] = React.useState(false);
@@ -71,6 +82,7 @@ function PatientDetail() {
   const [dataHospital, setDataHospital] = useState([]);
   const [imagefile, setImagefile] = useState(null);
   const [enqId, setEnqId] = useState("");
+  const [nodaestInput, setNodaestInput] = useState("");
   const [serviceData, setServiceData] = useState([]);
   const [payment_details, setPayment_details] = useState([]);
   const [selectedServices, setSelectedServices] = useState([]);
@@ -86,6 +98,7 @@ function PatientDetail() {
     payment_Date: "",
   });
   useEffect(() => {
+    gtdatareportsdata();
     getextraservice();
   }, []);
   const getextraservice = async () => {
@@ -162,11 +175,11 @@ function PatientDetail() {
   };
   const handleClose1 = () => {
     setOpen1(false);
-    setDrivername("")
-    setPickuptime("")
-    setNote("")
-    setVehicalnumber("")
-    setDate("")
+    setDrivername("");
+    setPickuptime("");
+    setNote("");
+    setVehicalnumber("");
+    setDate("");
   };
   const handleClose2 = () => {
     setOpen2(false);
@@ -213,7 +226,12 @@ function PatientDetail() {
 
   const handlesubmitdata = async () => {
     const servipostdata = {
-      services: { serviceId: valuedata, price: data.price,startTime :datedata.start_date,endTime:datedata.end_date },
+      services: {
+        serviceId: valuedata,
+        price: data.price,
+        startTime: datedata.start_date,
+        endTime: datedata.end_date,
+      },
     };
     console.log(servipostdata, "Service Data22");
     try {
@@ -252,7 +270,7 @@ function PatientDetail() {
           },
         }
       );
-    
+
       console.log(response.data);
       setTreatmentuser(response.data.patient_treatments, "treatment data");
     } catch (error) {
@@ -366,34 +384,24 @@ function PatientDetail() {
     }
   };
   const [filesData, setFilesData] = useState({});
-  // const onChangeFile = (e, fieldName) => {
-  //   const file = e.target.files[0]; // Only the first file is considered
-  //   if (file) {
-  //     setFilesData((prevState) => ({
-  //       ...prevState,
-  //       [fieldName]: file, // Use the fieldName as the key
-  //     }));
-  //   }
-  // };
-
   const getdataApi = async () => {
     try {
       const rresponse = await axios.get(`${baseurl}getActiveHospitals`, {
         headers: {
-          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
           "Content-Type": "application/json",
         },
-      })
+      });
       if (rresponse.data.success === true) {
-        setDataHospital(rresponse.data.Hospital_Details)
+        setDataHospital(rresponse.data.Hospital_Details);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
   useEffect(() => {
-    getdataApi()
-  }, [])
+    getdataApi();
+  }, []);
 
   const onChangeFile = (e, fieldName) => {
     const file = e.target.files[0];
@@ -529,26 +537,26 @@ function PatientDetail() {
       setTreatmentId("");
       setData("");
     } catch (err) {
-  console.group("Submission Error");
-  console.log("Raw error:", err);
+      console.group("Submission Error");
+      console.log("Raw error:", err);
 
-  let errorMessage = "An error occurred";
+      let errorMessage = "An error occurred";
 
-  if (typeof err === "string") {
-    errorMessage = err;
-  } else if (err instanceof Error) {
-    errorMessage = err.message;
-  } else if (err?.response?.data?.message) {
-    errorMessage = err.response.data.message;
-  } else if (err?.message) {
-    errorMessage = err.message;
-  } else if (typeof err === "object") {
-    errorMessage = JSON.stringify(err);
-  }
+      if (typeof err === "string") {
+        errorMessage = err;
+      } else if (err instanceof Error) {
+        errorMessage = err.message;
+      } else if (err?.response?.data?.message) {
+        errorMessage = err.response.data.message;
+      } else if (err?.message) {
+        errorMessage = err.message;
+      } else if (typeof err === "object") {
+        errorMessage = JSON.stringify(err);
+      }
 
-  console.error("Parsed error message:", errorMessage);
-  Swal.fire("Error!", errorMessage, "error");
-}
+      console.error("Parsed error message:", errorMessage);
+      Swal.fire("Error!", errorMessage, "error");
+    }
   };
   const handleChange = async (event, id) => {
     console.log(event.target, id);
@@ -668,10 +676,10 @@ function PatientDetail() {
     });
   };
 
-  const andlechangedate =(e)=>{
-    const {name,value}=e.target
-      setDatedata({...datedata,[name]:value})
-  }
+  const andlechangedate = (e) => {
+    const { name, value } = e.target;
+    setDatedata({ ...datedata, [name]: value });
+  };
   const getapicall = (getapicall) => {
     axios
       .get(`${baseurl}get_unadded_services_for_treatment/${getapicall}`, {
@@ -758,6 +766,71 @@ function PatientDetail() {
       console.log("Upload successful:", response.data);
     } catch (error) {
       console.error("Upload failed:", error);
+    }
+  };
+
+  const handleopenNotesModal = (id) => {
+    console.log(notes);
+    const response = notes.filter((item) => {
+      return item.id === id;
+    });
+    console.log(response[0].date);
+    setNodaestInput(response[0]);
+    console.log(id);
+    setNotesModal(true);
+  };
+  const handleCloseNotesmodal = () => {
+    setNotesModal(false);
+  };
+
+  const handlechangenotesdata = (e) => {
+    const { name, value } = e.target;
+    setNodaestInput({ ...nodaestInput, [name]: value });
+  };
+
+  const handleKysDetailnotes = async (e) => {
+    e.preventDefault();
+    try {
+      const postdata = {
+        id: nodaestInput.id,
+        note: nodaestInput.note,
+        date: nodaestInput.date,
+      };
+      const response = await axios.post(
+        `${baseurl}update_notes/${location.state.patientId}`,
+        postdata
+      );
+      if (response.data.success === true) {
+        dispatch(GetPatientTreatments({ id: location.state.patientId }));
+        handleCloseNotesmodal();
+        Swal.fire("Notes Updates Successfully!", "", "success");
+      } else {
+        toast.error("somethign went wornh");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const gtdatareportsdata = async () => {
+    try {
+      const response = await axios.get(
+        `${baseurl}getReports/${location.state.patientId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.data.success === true) {
+        setReportdataget(response.data.data);
+      } else {
+        console.log("Something went wrong");
+      }
+    } catch (error) {
+      console.log("Error:", error);
     }
   };
 
@@ -1009,7 +1082,10 @@ function PatientDetail() {
                                         </div>
                                         <div className="col-sm-5">
                                           <div className="para-main-div">
-                                            <p>{info.treatment_course_fee} {" "}   {info.duration}</p>
+                                            <p>
+                                              {info.treatment_course_fee}{" "}
+                                              {info.duration}
+                                            </p>
                                           </div>
                                         </div>
                                       </div>
@@ -1057,13 +1133,14 @@ function PatientDetail() {
                                     <h6>Free Services</h6>
                                   </div>
                                   <ul className="mb-2">
-                                    {info?.services?.map((item) => {
+                                    {info?.services?.map((item, index) => {
+                                      console.log(item);
                                       if (item.service_type === "Free") {
                                         return (
                                           <li
                                             key={item._id || item.serviceName}
                                           >
-                                            <div className="row">
+                                            <div className="row" key={index}>
                                               <div className="col-sm-3">
                                                 <div className="para-main-div">
                                                   <h6>Name:</h6>
@@ -1109,7 +1186,11 @@ function PatientDetail() {
                                             </div>
                                             <div className="col-sm-5">
                                               <div className="para-main-div">
-                                                <p>{item.price}  {"  "} {item.duration}</p>
+                                                <p>
+                                                  {item.price} {"  "}{" "}
+                                                  {item.duration}<br />
+                                                  {new Date(item.startTime).toLocaleDateString("en-GB")} to {new Date(item.endTime).toLocaleDateString("en-GB")	}
+                                                </p>
                                               </div>
                                             </div>
                                           </div>
@@ -1150,7 +1231,7 @@ function PatientDetail() {
                                                 <div className="para-main-div1">
                                                   <p>{item.appointment_Date}</p>
                                                   {item.status ===
-                                                    "Complete" ? (
+                                                  "Complete" ? (
                                                     <p>{item.status}</p>
                                                   ) : (
                                                     <FormControl
@@ -1164,18 +1245,18 @@ function PatientDetail() {
                                                       <Select
                                                         value={
                                                           item.status ===
-                                                            "pending"
+                                                          "pending"
                                                             ? "1"
                                                             : item.status ===
                                                               "Follow-Up"
-                                                              ? "2"
-                                                              : item.status ===
-                                                                "Complete"
-                                                                ? "3"
-                                                                : item.status ===
-                                                                  "Cancelled"
-                                                                  ? "4"
-                                                                  : "1"
+                                                            ? "2"
+                                                            : item.status ===
+                                                              "Complete"
+                                                            ? "3"
+                                                            : item.status ===
+                                                              "Cancelled"
+                                                            ? "4"
+                                                            : "1"
                                                         }
                                                         onChange={(e) =>
                                                           handleChangeDetails(
@@ -1229,7 +1310,9 @@ function PatientDetail() {
                                               </div>
                                               <div className="col-sm-5">
                                                 <div className="para-main-div">
-                                                  <p>{appointment.vehicle_no}</p>
+                                                  <p>
+                                                    {appointment.vehicle_no}
+                                                  </p>
                                                 </div>
                                               </div>
                                             </div>
@@ -1241,7 +1324,9 @@ function PatientDetail() {
                                               </div>
                                               <div className="col-sm-5">
                                                 <div className="para-main-div">
-                                                  <p>{appointment.driver_name}</p>
+                                                  <p>
+                                                    {appointment.driver_name}
+                                                  </p>
                                                 </div>
                                               </div>
                                             </div>
@@ -1253,7 +1338,9 @@ function PatientDetail() {
                                               </div>
                                               <div className="col-sm-5">
                                                 <div className="para-main-div">
-                                                  <p>{appointment.driver_contact}</p>
+                                                  <p>
+                                                    {appointment.driver_contact}
+                                                  </p>
                                                 </div>
                                               </div>
                                             </div>
@@ -1265,7 +1352,9 @@ function PatientDetail() {
                                               </div>
                                               <div className="col-sm-5">
                                                 <div className="para-main-div">
-                                                  <p>{appointment.pickup_time}</p>
+                                                  <p>
+                                                    {appointment.pickup_time}
+                                                  </p>
                                                 </div>
                                               </div>
                                             </div>
@@ -1551,55 +1640,55 @@ function PatientDetail() {
                     {kys?.length === 0
                       ? "No passport details found"
                       : kys?.map((info, index) => (
-                        <div key={index} className="card-box">
-                          <div className="pass-detail">
-                            <div className="img-patient">
-                              <h6>Patient Image</h6>
-                              <img
-                                src={`${image}${info.photo}`}
-                                alt="no image"
-                                className="rounded-circle shadow"
-                                width="100"
-                                height="100"
-                              />
-                            </div>
-                            <div className="id-proof">
-                              <h6>Id Proof</h6>
-                              {info.id_proof ? (
-                                <a
-                                  href={`https://sisccltd.com/omca_crm/${info.id_proof}`}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="btn btn-outline-primary btn-sm"
-                                >
-                                  View PDF
-                                </a>
-                              ) : (
-                                <span className="text-muted">
-                                  Not Uploaded
-                                </span>
-                              )}
-                              <div className="">
-                                <h6>Passport</h6>
-                                {info.passport ? (
+                          <div key={index} className="card-box">
+                            <div className="pass-detail">
+                              <div className="img-patient">
+                                <h6>Patient Image</h6>
+                                <img
+                                  src={`${image}${info.photo}`}
+                                  alt="no image"
+                                  className="rounded-circle shadow"
+                                  width="100"
+                                  height="100"
+                                />
+                              </div>
+                              <div className="id-proof">
+                                <h6>Id Proof</h6>
+                                {info.id_proof ? (
                                   <a
-                                    href={`https://sisccltd.com/omca_crm/${info.passport}`}
+                                    href={`https://sisccltd.com/omca_crm/${info.id_proof}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="view-pass"
+                                    className="btn btn-outline-primary btn-sm"
                                   >
-                                    View Passport
+                                    View PDF
                                   </a>
                                 ) : (
                                   <span className="text-muted">
                                     Not Uploaded
                                   </span>
                                 )}
+                                <div className="">
+                                  <h6>Passport</h6>
+                                  {info.passport ? (
+                                    <a
+                                      href={`https://sisccltd.com/omca_crm/${info.passport}`}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="view-pass"
+                                    >
+                                      View Passport
+                                    </a>
+                                  ) : (
+                                    <span className="text-muted">
+                                      Not Uploaded
+                                    </span>
+                                  )}
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
+                        ))}
                   </div>
                 </div>
               </div>
@@ -1624,31 +1713,52 @@ function PatientDetail() {
                       "No notes for Patient"
                     ) : (
                       <>
-                        {notes?.map((info, index) => (
-                          <div className="card-box">
-                            <div className="note-view">
-                              <h3 className="card-title">Note-{index + 1}</h3>
-                            </div>
-                            <div className="experience-box">
-                              <ul className="experience-list">
-                                <li>
-                                  <div className="experience-user">
-                                    <div className="before-circle"></div>
-                                  </div>
-                                  <div className="experience-content">
-                                    <div className="timeline-content">
-                                      <a href="#/" className="name">
-                                        {info.note}
-                                      </a>
-                                      <div>date-{new Date(info.date).toLocaleDateString('en-GB')}</div>
-                                      {/* <span className="time">treatment due payment-{info.treatment_due_payment}</span> */}
-                                    </div>
-                                  </div>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                        ))}
+                        {notes?.map((info, index) => {
+                          console.log(info);
+                          return (
+                            <>
+                              <div className="card-box">
+                                <div className="note-view">
+                                  <h3 className="card-title">
+                                    Note-{index + 1}
+                                  </h3>
+                                </div>
+                                <div className="experience-box">
+                                  <ul className="experience-list">
+                                    <li>
+                                      <div className="experience-user">
+                                        <div className="before-circle"></div>
+                                      </div>
+                                      <div className="experience-content d-flex">
+                                        <div className="timeline-content">
+                                          <a href="#/" className="name">
+                                            {info.note}
+                                          </a>
+                                          <div>
+                                            {new Date(
+                                              info.date
+                                            ).toLocaleDateString("en-GB")}
+                                          </div>
+                                          {/* <span className="time">treatment due payment-{info.treatment_due_payment}</span> */}
+                                        </div>
+                                        <div>
+                                          {" "}
+                                          <i
+                                            className="fa fa-edit text-primary "
+                                            onClick={() => {
+                                              handleopenNotesModal(info.id);
+                                            }}
+                                            style={{ cursor: "pointer" }}
+                                          ></i>
+                                        </div>
+                                      </div>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </>
+                          );
+                        })}
                       </>
                     )}
                   </div>
@@ -1835,7 +1945,7 @@ function PatientDetail() {
                 <div className="row">
                   <div className="col-md-12">
                     {payment_details?.length === 0 ? (
-                      "No payment details for patients"
+                      "No Reports for patients "
                     ) : (
                       <>
                         {groupedPayments &&
@@ -1862,39 +1972,60 @@ function PatientDetail() {
                                     </button>
                                   </div>
                                 </div>
-                                {/* <hr></hr> */}
-                                {/* Working */}
-                                {/* <div className="experience-box">
-                                  <ul className="experience-list">
-                                    {payments.map((info, idx) => (
-                                      <li key={idx}>
-                                        <div className="experience-user">
-                                          <div className="before-circle"></div>
-                                        </div>
-                                        <div className="experience-content">
-                                          <div className="timeline-content">
-                                            <div>
-                                              Payment Date -{" "}
-                                              {moment(info.payment_Date).format(
-                                                "L"
-                                              )}
-                                            </div>
-                                            <div>
-                                              Payment Method -{" "}
-                                              {info.paymentMethod}
-                                            </div>
-                                            <div>
-                                              Paid Amount - {info.paid_amount}
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </li>
-                                    ))}
-                                  </ul>
-                                </div> */}
                               </div>
                             )
                           )}
+                        <div className="col-md-12">
+                          <div className="table-responsive">
+                            <TableContainer
+                              component={Paper}
+                              style={{ overflowX: "auto" }}
+                            >
+                              <Table
+                                stickyHeader
+                                aria-label="sticky table"
+                                className="table-no-card"
+                              >
+                                <TableHead>
+                                  <TableRow>
+                                    <TableCell>Tratment ID</TableCell>
+                                    <TableCell>Course Name </TableCell>
+                                    <TableCell>Report Title </TableCell>
+                                    <TableCell>Reports</TableCell>
+                                  </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                  {reportdataget &&
+                                    reportdataget.length > 0 &&
+                                    reportdataget.map((item, index) => {
+                                      return (
+                                        <>
+                                          <TableRow key={index}>
+                                            <TableCell>
+                                              {item.treatmentId}
+                                            </TableCell>
+                                            <TableCell>
+                                              {item.treatment_course_name}
+                                            </TableCell>
+                                            <TableCell>
+                                              {item.reportTitle}
+                                            </TableCell>
+                                            <TableCell>
+                                              <a
+                                                href={`${image}${item.treatmentReport}`}
+                                              >
+                                                Download Report
+                                              </a>
+                                            </TableCell>
+                                          </TableRow>
+                                        </>
+                                      );
+                                    })}
+                                </TableBody>
+                              </Table>
+                            </TableContainer>
+                          </div>
+                        </div>
                       </>
                     )}
                   </div>
@@ -1903,9 +2034,9 @@ function PatientDetail() {
             </div>
           </div>
         </div>
-      </div >
+      </div>
       {/* add-service-modal-start */}
-      < React.Fragment >
+      <React.Fragment>
         <Dialog fullWidth maxWidth="sm" open={openModal} onClose={closeModal}>
           <div className="main-card-header">
             <div className="note-hd">
@@ -1990,30 +2121,28 @@ function PatientDetail() {
               <Box sx={{ display: "flex", gap: 2 }}>
                 <Box sx={{ flex: 1 }}>
                   <div className="field-set mb-0">
-                     <div className="field-set mb-0">
-                    <label>
-                       Start Date<span className="text-danger">*</span>
-                    </label>
-                    <input
-                      type="date"
-                      className="form-control"
-                    
-                      name="start_date"
-                      onChange={andlechangedate}
-                      placeholder="Enter price"
-                    />
-                  </div>
+                    <div className="field-set mb-0">
+                      <label>
+                        Start Date<span className="text-danger">*</span>
+                      </label>
+                      <input
+                        type="date"
+                        className="form-control"
+                        name="start_date"
+                        onChange={andlechangedate}
+                        placeholder="Enter price"
+                      />
+                    </div>
                   </div>
                 </Box>
                 <Box sx={{ flex: 1 }}>
                   <div className="field-set mb-0">
                     <label>
-                       End Date<span className="text-danger">*</span>
+                      End Date<span className="text-danger">*</span>
                     </label>
                     <input
                       type="date"
                       className="form-control"
-                    
                       name="end_date"
                       onChange={andlechangedate}
                       placeholder="Enter price"
@@ -2034,7 +2163,7 @@ function PatientDetail() {
             </Box>
           </DialogContent>
         </Dialog>
-      </React.Fragment >
+      </React.Fragment>
       {/* add-service-modal-end */}
       {/* add-hospital-modal-start */}
       <React.Fragment>
@@ -2076,7 +2205,9 @@ function PatientDetail() {
                     </label>
                     <Autocomplete
                       disablePortal
-                      options={dataHospital?.map((job) => job.hospitalName) || []} // Fallback to empty array
+                      options={
+                        dataHospital?.map((job) => job.hospitalName) || []
+                      } // Fallback to empty array
                       onChange={(e, value) => {
                         const selectedCourse = dataHospital?.find(
                           (job) => job.hospitalName === value
@@ -2268,11 +2399,9 @@ function PatientDetail() {
                       className="form-control"
                       onChange={(e) => setPickuptime(e.target.value)}
                       value={pickuptime}
-                    // min={new Date().toISOString().split("T")[0]}
+                      // min={new Date().toISOString().split("T")[0]}
                     />
                     <span style={{ color: "red" }}>
-
-
                       {appointErr && !pickuptime
                         ? "*Please Select Pickup Time"
                         : ""}
@@ -2680,7 +2809,79 @@ function PatientDetail() {
           </DialogContent>
         </Dialog>
       </React.Fragment>
-      {/* add-payment-modal-end */}
+      {/* Notes modal*/}
+      <React.Fragment>
+        <Dialog
+          fullWidth={fullWidth}
+          maxWidth={maxWidth}
+          open={notesModal}
+          onClose={handleCloseNotesmodal}
+        >
+          <div className="main-card-header">
+            <div className="note-hd">
+              <h6>Edit Notes</h6>
+            </div>
+            <div className="cross-icon" onClick={handleCloseNotesmodal}>
+              <i class="fa-solid fa-xmark"></i>
+            </div>
+          </div>
+          <DialogContent className="main-box">
+            <Box
+              noValidate
+              component="form"
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                width: "fit-content",
+              }}
+              className="contact-form"
+            >
+              <Box>
+                <form id="contact-form" className="contact-form">
+                  <div className="field-set">
+                    <label>
+                      Notes<span className="text-danger">*</span>
+                    </label>
+                    <div className="upload-input">
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="note"
+                        value={nodaestInput.note}
+                        onChange={handlechangenotesdata}
+                      />
+                    </div>
+                  </div>
+                  {/* <div className="field-set">
+                    <label>
+                      Date<span className="text-danger">*</span>
+                    </label>
+                    <div className="upload-input">
+                      <input
+                        type="date"
+                        value={nodaestInput.date}
+                        className="form-control"
+                        name="date"
+                        onChange={handlechangenotesdata}
+                      />
+                    </div>
+                  </div> */}
+
+                  <DialogActions className="submit-main">
+                    <Button
+                      type="submit"
+                      onClick={(e) => handleKysDetailnotes(e)}
+                      variant="contained"
+                    >
+                      Submit
+                    </Button>
+                  </DialogActions>
+                </form>
+              </Box>
+            </Box>
+          </DialogContent>
+        </Dialog>
+      </React.Fragment>
     </>
   );
 }

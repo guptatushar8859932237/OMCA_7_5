@@ -219,48 +219,6 @@ export default function AddEnquiry() {
                           <label>
                             Country<span className="text-danger">*</span>
                           </label>
-                          {/* <Field name="country">
-                            {({ field, form }) => (
-                              <>
-                                <FormControl fullWidth size="small">
-                                  <Select
-                                    value={field.value}
-                                    onChange={(e) =>
-                                      form.setFieldValue("country", e.target.value)
-                                    }
-                                    input={<OutlinedInput placeholder="Select Country" />}
-                                    className="select-country form-control"
-                                    displayEmpty
-                                    sx={{ height: 40 }}
-                                    MenuProps={{
-                                      PaperProps: {
-                                        style: {
-                                          maxHeight: 200, // Limit dropdown height
-                                        },
-                                      },
-                                    }}
-                                  >
-                                    <MenuItem value="">
-                                      <em>Select Country</em>
-                                    </MenuItem>
-                                    {Countries.map((con, idx) => {
-                                      console.log(con.name);
-                                      return(
-                                        <>
-                                        <MenuItem key={idx} value={con.name}>
-                                        {con.name}
-                                      </MenuItem>
-                                        </>
-                                      )
-                                    }
-                                      
-                                    )}
-                                  </Select>
-                                </FormControl>
-                                <ErrorMessage name="country" component="div" style={{ color: "red" }} />
-                              </>
-                            )}
-                          </Field> */}
                           <Field name="country">
                             {({ field, form }) => (
                               <>

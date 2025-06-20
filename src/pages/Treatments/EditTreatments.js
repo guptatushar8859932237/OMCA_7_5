@@ -296,7 +296,7 @@ export default function EditTreatments() {
     course_name: Yup.string().required('Course name is required'),
     course_price: Yup.string().required('Course price is required'),
    
-    icon_image: Yup.mixed(), // Optional image
+    icon_image: Yup.string().required('Image is required'), // Optional image
   });
 
   return (

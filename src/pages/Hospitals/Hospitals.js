@@ -28,9 +28,9 @@ export default function Hospitals() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [rows, setRows] = useState([]);
   const dispatch = useDispatch();
-  const { hospital, loading, error } = useSelector((state) => state.hospital);
   const [filterValue, setFilterValue] = useState("");
   const [searchApiData, setSearchApiData] = useState([]);
+  const { hospital, loading, error } = useSelector((state) => state.hospital);
   useEffect(() => {
     dispatch(GetAllHositalData());
     console.log(error, hospital);
@@ -237,150 +237,9 @@ export default function Hospitals() {
                           <TableCell>Contact</TableCell>
                           <TableCell>Num. of Patient</TableCell>
                           <TableCell>Status</TableCell>
-                          {/* <TableCell align="left" style={{ minWidth: "100px" }}>
-                    candidateCounts
-                  </TableCell> */}
                           <TableCell>Action</TableCell>
                         </TableRow>
                       </TableHead>
-                      {/* <TableBody>
-                        {rows
-                          .slice(
-                            page * rowsPerPage,
-                            page * rowsPerPage + rowsPerPage
-                          )
-                          .map((info, i) => {
-                            console.log(info);
-                            return (
-                              <TableRow
-                                role="checkbox"
-                                tabIndex={-1}
-                                key={info.code}
-                              >
-                                <TableCell>
-                                  {page * rowsPerPage + i + 1}
-                                </TableCell>
-                                <TableCell>
-                                  <img
-                                    src={`${image}${info.hospitalImage}`}
-                                    className="hos-img"
-                                    alt=""
-                                  />{" "}
-                                </TableCell>
-                                <TableCell>{info.hospitalName}</TableCell>
-                                <TableCell>{info.location}</TableCell>
-                                <TableCell>{info.hospitalCode}</TableCell>
-                                <TableCell>{info.contact}</TableCell>
-                                <TableCell>
-                                  {
-                                    // <BootstrapSwitchButton
-                                    //   width={100}
-                                    //   checked={Boolean(info.status)}
-                                    //   onlabel="Active"
-                                    //   offlabel="Inactive"
-                                    //   onstyle="success"
-                                    // // onChange={() => {
-                                    // //   dataActiveInactive(info._id, info.status);
-                                    // // }}
-                                    // />
-                                    // <label className="active-switch">
-                                    //   <input
-                                    //     className="active-switch-input "
-                                    //     type="checkbox"
-                                    //     checked={Boolean(info.status)}
-                                    //     onChange={(e) =>
-                                    //       handleStatusToggle(
-                                    //         info.hospitalId,
-                                    //         e.target.checked
-                                    //       )
-                                    //     }
-                                    //   />
-                                    //   <span
-                                    //     className="active-switch-label "
-                                    //     data-on="Active"
-                                    //     data-off="Inactive"
-                                    //   ></span>
-                                    //   <span className="active-switch-handle"></span>
-                                    // </label>
-                                    //                                    <label className="active-switch">
-                                    //   <input
-                                    //     className="active-switch-input"
-                                    //     type="checkbox"
-                                    //     checked={info.status === 1}
-                                    //     onChange={(e) =>
-                                    //       handleStatusToggle(info.hospitalId, e.target.checked)
-                                    //     }
-                                    //   />
-                                    //   <span
-                                    //     className="active-switch-label"
-                                    //     data-on="Active"
-                                    //     data-off="Inactive"
-                                    //   ></span>
-                                    //   <span className="active-switch-handle"></span>
-                                    // </label>
-
-                                    // <div className="toggle-container">
-                                    //   <label className="switch">
-                                    //     <input
-                                    //       type="checkbox"
-                                    //       checked={info.status === 1}
-                                    //       onChange={(e) =>
-                                    //         handleStatusToggle(
-                                    //           info.hospitalId,
-                                    //           e.target.checked
-                                    //         )
-                                    //       }
-                                    //     />
-                                    //     <span className="slider round"></span>
-                                    //   </label>
-                                    // </div>
-                                    <label className="active-switch">
-                                      <input
-                                        className="active-switch-input "
-                                        type="checkbox"
-                                        checked={info.status === 1}
-                                        onChange={(e) => {
-                                          handleStatusToggle(
-                                            info.hospitalId,
-                                            e.target.checked
-                                          );
-                                        }}
-                                      />
-                                      <span
-                                        className="active-switch-label "
-                                        data-on="Active"
-                                        data-off="Inactive"
-                                      ></span>
-                                      <span className="active-switch-handle"></span>
-                                    </label>
-                                  }
-                                </TableCell>
-                                <TableCell className="action-icon">
-                                  <i
-                                    className="fa-solid fa-pen-to-square"
-                                    onClick={(e) =>
-                                      EditButton(e, info.hospitalId)
-                                    }
-                                  ></i>
-                                  <i
-                                    className="fa-solid fa-trash"
-                                    onClick={(e) =>
-                                      handledelet(e, info.hospitalId)
-                                    }
-                                  ></i>
-                                </TableCell>
-                                {/* <TableCell align="left" className="dropdown dropdown-action"> <a href="#" className="action-icon dropdown-toggle" data-toggle="dropdown"
-                                  aria-expanded="false"><i className="fa fa-ellipsis-v"></i></a>
-                                  <div className="dropdown-menu dropdown-menu-right">
-                                    <a className="dropdown-item" onClick={(e) => EditButton(e, info.hospitalId)}><i className="fa fa-pencil m-r-5"></i>
-                                      Edit</a>
-                                    <a className="dropdown-item" data-toggle="modal" data-target="#delete_patient" onClick={(e) => handledelet(e, info.hospitalId)}><i
-                                      className="fa fa-trash-o m-r-5"></i> Delete</a>
-                                  </div></TableCell> */}
-                      {/* </TableRow>
-                            );
-                          })}
-                      </TableBody> */}
                       <TableBody>
                         {rows.length > 0 &&
                         rows.slice(

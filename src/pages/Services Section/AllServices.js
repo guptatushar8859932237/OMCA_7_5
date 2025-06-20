@@ -508,72 +508,6 @@ export default function AllServices() {
                         <TableCell>Action</TableCell>
                       </TableRow>
                     </TableHead>
-                    {/* <TableBody>
-                      {rows
-                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                        .map((info, i) => (
-                          <TableRow key={info.serviceId}>
-                            <TableCell>{page * rowsPerPage + i + 1}</TableCell>
-                            <TableCell>{info.serviceId}</TableCell>
-                            <TableCell>{info.serviceName}</TableCell>
-                            <TableCell>{info.price}</TableCell>
-                            <TableCell>{info.duration}</TableCell>
-                            <TableCell>
-                              <label className="active-switch">
-                                <input
-                                  type="checkbox"
-                                  className="active-switch-input"
-                                  checked={Boolean(info.isActive)}
-                                  disabled={activeToggleLoading === info.serviceId}
-                                  onChange={() =>
-                                    dataActiveInactive(info.serviceId, info.isActive)
-                                  }
-                                />
-                                <span
-                                  className="active-switch-label"
-                                  data-on="Active"
-                                  data-off="Inactive"
-                                ></span>
-                                <span className="active-switch-handle"></span>
-                              </label>
-                            </TableCell>
-                            {/* <TableCell align="left" className="dropdown dropdown-action">
-                              <a
-                                href="#"
-                                className="action-icon dropdown-toggle"
-                                data-toggle="dropdown"
-                                aria-expanded="false"
-                              >
-                                <i className="fa fa-ellipsis-v"></i>
-                              </a>
-                              <div className="dropdown-menu dropdown-menu-right">
-                                <a
-                                  className="dropdown-item" style={{ cursor: "pointer" }}
-                                  onClick={(e) => EditButton(e, info.serviceId)}
-                                >
-                                  <i className="fa fa-pencil m-r-5"></i> Edit
-                                </a>
-                                <a
-                                  className="dropdown-item" style={{ cursor: "pointer" }}
-                                  onClick={(e) => handleDelete(e, info.serviceId)}
-                                >
-                                  <i className="fa fa-trash-o m-r-5"></i> Delete
-                                </a>
-                              </div>
-                            </TableCell> */}
-                    {/* <TableCell className="action-icon">
-                              <VisibilityIcon
-                                className="eye-icon"
-                                onClick={(e) => EditButton(e, info.serviceId)}
-                              />
-                              <i
-                                className="fa-solid fa-trash"
-                                onClick={(e) => handleDelete(e, info.serviceId)}
-                              ></i>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                    </TableBody> */}
                     <TableBody>
                       {rows.length > 0 &&
                       rows.slice(
@@ -647,7 +581,7 @@ export default function AllServices() {
                       )}
                     </TableBody>
                   </Table>
-                  <Stack spacing={2}>
+                  {/* <Stack spacing={2}>
                     <Pagination
                       className="page-nation"
                       count={rows.length}
@@ -657,7 +591,16 @@ export default function AllServices() {
                       defaultPage={6}
                       siblingCount={0}
                     />
-                  </Stack>
+                  </Stack> */}
+                    <Stack spacing={2}>
+                                                           <Pagination
+                                                             className="page-nation"
+                                                             count={Math.ceil(rows.length / rowsPerPage)}
+                                                             page={page + 1}
+                                                             onChange={(event, value) => setPage(value - 1)}
+                                                             color="primary"
+                                                           />
+                                                          </Stack>
                   {/* <TablePagination
                     component="div"
                     count={rows.length}

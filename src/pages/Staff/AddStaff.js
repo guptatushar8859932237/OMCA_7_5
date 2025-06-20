@@ -195,6 +195,9 @@ export default function AddStaff() {
                           <option value="">Select Role</option>
                           <option value="Manager">Manager</option>
                           <option value="Receptionist">Receptionist</option>
+                          <option value="Finance">Finance</option>
+                          <option value="Coordinator">Coordinator</option>
+
                         </Field>
                         <ErrorMessage
                           name="role"
@@ -203,13 +206,6 @@ export default function AddStaff() {
                         />
                       </div>
                     </div>
-                    {/* <div className="col-sm-6">
-                          <div className="form-group">
-                            <label>Role</label>
-                            <Field className="form-control" type="text" name="role" />
-                            <ErrorMessage name="role" component="div" style={{ color: "red" }} />
-                          </div>
-                        </div> */}
                     <div className="col-sm-6">
                       <div className="field-set gender-select">
                         <label className="gen-label">

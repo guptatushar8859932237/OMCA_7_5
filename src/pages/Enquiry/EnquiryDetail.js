@@ -171,10 +171,15 @@ export default function EnquiryDetail() {
                   </div>
                 </div>
                 <div className="treat-hd">
-                  <h6>Attendant Details</h6>
+               {
+row.patient_relation ?
+                 <h6>Attendant Details</h6>
+:""               } 
                   <span className="line"></span>
                 </div>
-                <div className="row">
+                {
+                  row.patient_relation ?
+                   <div className="row">
                   <div className="col-md-6">
                     <div className="field-set">
                       <label>Attendant Relation<span className="text-danger">*</span></label>
@@ -207,7 +212,9 @@ export default function EnquiryDetail() {
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> :""
+                }
+               
                 <div className="row">
                   <div className="col-md-12">
                     <div className="treat-hd">

@@ -187,7 +187,7 @@ export default function Dashboard() {
             {arraycount &&
               arraycount.length > 0 &&
               arraycount.map((item, index) => (
-                <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3" key={index} style={{cursor:"pointer"}} onClick={() => navigate("/Admin/Treatments")}>
+                <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3" key={index} style={{cursor:"pointer"}} onClick={() => navigate("/Admin/patients")}>
                   <div className="dash-widget">
                     <div className="dash-bg">
                       <i ><img className="dash-imge" src={`${image}${item.image}`} /></i>

@@ -18,7 +18,14 @@ import TableCell from "@mui/material/TableCell";
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import { DeleteTreatment } from "../../reducer/TreatmentSlice";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { Pagination, Stack, Table, TableBody, TableHead, TableRow } from "@mui/material";
+import {
+  Pagination,
+  Stack,
+  Table,
+  TableBody,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 import { Edit } from "@mui/icons-material";
 export default function Treatments() {
   const navigate = useNavigate();
@@ -122,62 +129,78 @@ export default function Treatments() {
             </div>
           </div>
           <div className="main_content">
-                  <div className="row">
-                    <div className="col-md-12">
-                      <div className="table-responsive">
-                        <TableContainer component={Paper} style={{ overflowX: "auto" }}>
-                          <Table
-                            stickyHeader
-                            aria-label="sticky table"
-                            className="table-no-card"
-                          >
-                            <TableHead>
-                              <TableRow>
-                                <TableCell>Sr.No.</TableCell>
-                                <TableCell>Disease Name</TableCell>
-                                <TableCell>Price </TableCell>
-                                <TableCell>Demanding country</TableCell>
-                                <TableCell>Action</TableCell>
-                              </TableRow>
-                            </TableHead>
-                           
-                            <TableBody>
-          {rows.length > 0 && rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).length > 0 ? (
-            rows
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((info, i) => (
-                <TableRow key={info.serviceId}>
-                  <TableCell>{page * rowsPerPage + i + 1}</TableCell>
-                  <TableCell>{info.course_name}</TableCell>
-                  <TableCell>{info.course_price}</TableCell>
-                  <TableCell>{info.most_demanded_country ? (
-                                      <span>{info.most_demanded_country}</span>
-                                    ) : (
-                                      ""
-                                    )}</TableCell>
-                    <TableCell className="action-icon">
-            <Edit
-              className="fa-solid fa-pen-to-square"
-             onClick={(e) => EditButton(e, info.course_id)}
-            />
-            {/* <i
+            <div className="row">
+              <div className="col-md-12">
+                <div className="table-responsive">
+                  <TableContainer
+                    component={Paper}
+                    style={{ overflowX: "auto" }}
+                  >
+                    <Table
+                      stickyHeader
+                      aria-label="sticky table"
+                      className="table-no-card"
+                    >
+                      <TableHead>
+                        <TableRow>
+                          <TableCell>Sr.No.</TableCell>
+                          <TableCell>Disease Name</TableCell>
+                          <TableCell>Price </TableCell>
+                          <TableCell>Demanding Country</TableCell>
+                          <TableCell>Action</TableCell>
+                        </TableRow>
+                      </TableHead>
+
+                      <TableBody>
+                        {rows.length > 0 &&
+                        rows.slice(
+                          page * rowsPerPage,
+                          page * rowsPerPage + rowsPerPage
+                        ).length > 0 ? (
+                          rows
+                            .slice(
+                              page * rowsPerPage,
+                              page * rowsPerPage + rowsPerPage
+                            )
+                            .map((info, i) => (
+                              <TableRow key={info.serviceId}>
+                                <TableCell>
+                                  {page * rowsPerPage + i + 1}
+                                </TableCell>
+                                <TableCell>{info.course_name}</TableCell>
+                                <TableCell>{info.course_price}</TableCell>
+                                <TableCell>
+                                  {info.most_demanded_country ? (
+                                    <span>{info.most_demanded_country}</span>
+                                  ) : (
+                                    ""
+                                  )}
+                                </TableCell>
+                                <TableCell className="action-icon">
+                                  <i
+                                    className="fa-solid fa-pen-to-square"
+                                    onClick={(e) =>
+                                      EditButton(e, info.course_id)
+                                    }
+                                  />
+                                  {/* <i
               className="fa-solid fa-trash"
               onClick={(e) =>
                                     handledelet(e, info.course_id)
                                   }
             ></i> */}
-              {localStorage.getItem("Role") === "Admin" ? (
-                                  <i
-                                    className="fa-solid fa-trash"
-                                    onClick={(e) =>
-                                    handledelet(e, info.course_id)
-                                  }
-                                  ></i>
-                                ) : (
-                                  ""
-                                )}
-          </TableCell>
-                  {/* <TableCell className="action-icon">
+                                  {localStorage.getItem("Role") === "Admin" ? (
+                                    <i
+                                      className="fa-solid fa-trash"
+                                      onClick={(e) =>
+                                        handledelet(e, info.course_id)
+                                      }
+                                    ></i>
+                                  ) : (
+                                    ""
+                                  )}
+                                </TableCell>
+                                {/* <TableCell className="action-icon">
                     <Typography className="action-icon">
                                 <a
                                   className="dropdown-item"
@@ -200,30 +223,27 @@ export default function Treatments() {
                                 </a>
                               </Typography>
                   </TableCell> */}
-                </TableRow>
-              ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={7} align="center">
-                No Data Found
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-        
-                          </Table>
-                          <Stack spacing={2}>
-                            <Pagination
-                              className='page-nation'
-                              count={rows.length}
-                              page={page}
-                              onPageChange={handleChangePage}
-                              rowsPerPage={1}
-                              defaultPage={6}
-                              siblingCount={0}
-                            />
-                          </Stack>
-                          {/* <TablePagination
+                              </TableRow>
+                            ))
+                        ) : (
+                          <TableRow>
+                            <TableCell colSpan={7} align="center">
+                              No Data Found
+                            </TableCell>
+                          </TableRow>
+                        )}
+                      </TableBody>
+                    </Table>
+                    <Stack spacing={2}>
+                      <Pagination
+                        className="page-nation"
+                        count={Math.ceil(rows.length / rowsPerPage)}
+                        page={page + 1}
+                        onChange={(event, value) => setPage(value - 1)}
+                        color="primary"
+                      />
+                    </Stack>
+                    {/* <TablePagination
                             component="div"
                             count={rows.length}
                             page={page}
@@ -232,12 +252,12 @@ export default function Treatments() {
                             rowsPerPageOptions={[]}
                             onRowsPerPageChange={handleChangeRowsPerPage}
                           /> */}
-                        </TableContainer>
-                      </div>
-                    </div>
-                  </div>
+                  </TableContainer>
                 </div>
-        
+              </div>
+            </div>
+          </div>
+
           {/* <div className="row">
             <div className="col-md-12">
               {rows
@@ -303,7 +323,7 @@ export default function Treatments() {
                               
                               <a className="dropdown-item" href="#" data-toggle="modal" data-target="#delete_patient"  onClick={(e) => handledelet(e, item.course_id)}><i
                                 className="fa fa-trash-o m-r-5"></i> Delete</a></div></div></Typography> */}
-                          {/* </AccordionSummary>
+          {/* </AccordionSummary>
                           <AccordionDetails className="acc-details">
                             <Typography>
                               <div className="row">
@@ -328,7 +348,7 @@ export default function Treatments() {
                                   </div>
                                 </div>
                               </div> */}
-                              {/* <table className="table table-hover text-right thead-light">
+          {/* <table className="table table-hover text-right thead-light">
                               <thead>
                                 <tr className="text-capitalize">
                                   <th className="text-left common_style">categories</th>
@@ -351,14 +371,14 @@ export default function Treatments() {
                                 )}
                               </tbody>
                             </table> */}
-                            {/* </Typography>
+          {/* </Typography>
                           </AccordionDetails>
                         </Accordion>
                       </div>
                     </>
                   );
                 })} */}
-              {/* <Stack spacing={2} alignItems="end" marginTop={2}>
+          {/* <Stack spacing={2} alignItems="end" marginTop={2}>
                 <Pagination
                   count={Math.ceil(rows.length / rowsPerPage)}
                   page={page + 1}
@@ -367,7 +387,7 @@ export default function Treatments() {
                   className="page-item"
                 />
               </Stack> */}
-              {/* <TablePagination
+          {/* <TablePagination
                 component="div"
                 count={rows.length}
                 page={page}
@@ -376,10 +396,10 @@ export default function Treatments() {
                 rowsPerPageOptions={[]}
                 onRowsPerPageChange={handleChangeRowsPerPage}
               /> */}
-            {/* </div>
+          {/* </div>
           </div> */}
         </div>
-      </div> 
+      </div>
       {/* <div id="delete_patient" className="modal fade delete-modal" role="dialog">
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">

@@ -156,6 +156,34 @@ export default function Appointments() {
     setFilterValue("");
     setAppointments(searchApiData);
   };
+  const handleSampleFile =async () => {
+        try {
+      const response = await axios.get(`${baseurl}export_appointments`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }, {
+        responseType: "blob", 
+      });
+      console.log(response.data)
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "Sample_Enquiry.xlsx"); // File name
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+  
+      return response.data; // Success response
+    } catch (err) {
+      console.error(
+        "Error downloading the sample file:",
+        err.response?.data?.message || err.message
+      );
+      // Handle error properly or throw
+      throw err;
+    }
+    };
   return (
     <>
       <div className="page-wrapper">
@@ -193,6 +221,12 @@ export default function Appointments() {
                       }}
                     />
                   </div>
+                   <button onClick={handleSampleFile} className="add-button mx-2">
+                        <span>
+                          <i className="fa fa-file"></i>
+                        </span>
+                        Export File
+                      </button>
                 </div>
               </div>
             </div>
@@ -358,7 +392,7 @@ export default function Appointments() {
                                         Schedule
                                       </MenuItem>
                                       <MenuItem value="2">Follow-Up</MenuItem>
-                                      <MenuItem value="3">Complete</MenuItem>
+                                      <MenuItem value="3"> Completed</MenuItem>
                                       <MenuItem value="4">Cancelled</MenuItem>
                                     </Select>
                                   </FormControl>
