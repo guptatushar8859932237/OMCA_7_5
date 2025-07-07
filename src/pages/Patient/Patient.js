@@ -228,34 +228,33 @@ export default function Patient() {
 
   console.log(seekerStatus);
 
+  const handleSampleFile = async () => {
+    try {
+      const response = await axios.get(`${baseurl}export_patients`, {
+        responseType: "blob", // ✅ Top-level key, not inside headers
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
 
-const handleSampleFile = async () => {
-  try {
-    const response = await axios.get(`${baseurl}export_patients`, {
-      responseType: "blob", // ✅ Top-level key, not inside headers
-      headers: {
-        "Authorization": `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
+      // ✅ Create a downloadable Excel file
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "Sample_Enquiry.xlsx");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
 
-    // ✅ Create a downloadable Excel file
-    const url = window.URL.createObjectURL(new Blob([response.data]));
-    const link = document.createElement("a");
-    link.href = url;
-    link.setAttribute("download", "Sample_Enquiry.xlsx");
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-    return response.data;
-  } catch (err) {
-    console.error(
-      "Error downloading the sample file:",
-      err.response?.data?.message || err.message
-    );
-    throw err;
-  }
-};
+      return response.data;
+    } catch (err) {
+      console.error(
+        "Error downloading the sample file:",
+        err.response?.data?.message || err.message
+      );
+      throw err;
+    }
+  };
 
   return (
     <>
@@ -268,42 +267,43 @@ const handleSampleFile = async () => {
                   <h4 className="page-title mb-0">Manage Patients</h4>
                 </div>
                 <div className="d-flex">
-
-                <div className="search-btn-main">
-                  <div className="mr-3">
-                    <TextField
-                      sx={{ width: "100%" }}
-                      label="Search By Patient Id and Name"
-                      id="outlined-size-small"
-                      size="small"
-                      className="field-count"
-                      value={filterValue}
-                      onChange={(e) => handleFilter(e)}
-                      InputLabelProps={{ shrink: true }}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end" className="input-set">
-                            {filterValue && (
-                              <IconButton
-                                onClick={handleClearFilter}
-                                edge="end"
-                              >
-                                <ClearIcon />
-                              </IconButton>
-                            )}
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
+                  <div className="search-btn-main">
+                    <div className="mr-3">
+                      <TextField
+                        sx={{ width: "100%" }}
+                        label="Search By Patient Id and Name"
+                        id="outlined-size-small"
+                        size="small"
+                        className="field-count"
+                        value={filterValue}
+                        onChange={(e) => handleFilter(e)}
+                        InputLabelProps={{ shrink: true }}
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment
+                              position="end"
+                              className="input-set"
+                            >
+                              {filterValue && (
+                                <IconButton
+                                  onClick={handleClearFilter}
+                                  edge="end"
+                                >
+                                  <ClearIcon />
+                                </IconButton>
+                              )}
+                            </InputAdornment>
+                          ),
+                        }}
+                      />
+                    </div>
                   </div>
-
-                </div>
                   <button onClick={handleSampleFile} className="add-button ">
-                        <span>
-                          <i className="fa fa-file mx-1"></i>
-                        </span>
-                        Export File
-                      </button>
+                    <span>
+                      <i className="fa fa-file mx-1"></i>
+                    </span>
+                    Export File
+                  </button>
                 </div>
               </div>
             </div>
@@ -331,11 +331,9 @@ const handleSampleFile = async () => {
                           <TableCell>Email</TableCell>
                           <TableCell>Country</TableCell>
                           <TableCell>Patient Disease</TableCell>
-
                           <TableCell>Action</TableCell>
                         </TableRow>
                       </TableHead>
-
                       <TableBody>
                         {rows.length === 0 ? (
                           <TableRow>
@@ -358,10 +356,18 @@ const handleSampleFile = async () => {
                                 <TableCell>
                                   {page * rowsPerPage + i + 1}
                                 </TableCell>
-                                <TableCell>{info.patientId}</TableCell>
+                                <TableCell>
+                                  {info?.patientNumber
+                                    ? info?.patientNumber
+                                    : info.patientId}
+                                </TableCell>
                                 <TableCell>{info.patient_name}</TableCell>
                                 <TableCell>{info.emergency_contact}</TableCell>
-                                <TableCell>{new Date(info.createdAt).toLocaleDateString("en-GB")}</TableCell>
+                                <TableCell>
+                                  {new Date(info.createdAt).toLocaleDateString(
+                                    "en-GB"
+                                  )}
+                                </TableCell>
                                 <TableCell>{info.email}</TableCell>
                                 <TableCell>{info.country}</TableCell>
                                 <TableCell>

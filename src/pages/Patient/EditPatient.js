@@ -1,4 +1,3 @@
-import React from "react";
 import { Formik, Field, ErrorMessage, Form } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,10 +8,10 @@ import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { GetAllPatients } from "../../reducer/PatientsSlice";
 import { GetAllCountries } from "../../reducer/Countries";
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import OutlinedInput from '@mui/material/OutlinedInput';
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import OutlinedInput from "@mui/material/OutlinedInput";
 export default function EditPatient() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -34,7 +33,7 @@ export default function EditPatient() {
       const selectedUser = patient.find(
         (item) => item.patientId === location.state.patientId
       );
-      console.log(selectedUser)
+      console.log(selectedUser);
       setIspatient(selectedUser || null);
     }
   }, [location.state?.patientId, patient]);
@@ -46,12 +45,12 @@ export default function EditPatient() {
       .min(0, "Age cannot be less than 0")
       .max(120, "Age cannot exceed 120"),
     gender: Yup.string().required("Gender is required"),
+    patientNumber: Yup.string().required("Patient ID is required"),
     email: Yup.string()
       .email("Invalid email address")
       .required("Email is required"),
     emergency_contact_no: Yup.string()
-      .required("Contact Number is required")
-      .matches(/^(\+91\s)?[6-9]\d{9}$/, "Phone number is not valid"),
+      .required("Contact number is required"),
     country: Yup.string().required("Country is required"),
   });
 
@@ -87,8 +86,9 @@ export default function EditPatient() {
                     emergency_contact_no: ispatient?.emergency_contact || "",
                     country: ispatient?.country || "",
                     patient_relation: ispatient?.patient_relation || "",
-                    patient_relation_name: ispatient?.patient_relation_name || "",
-                    // discussionNotes: '',
+                    patient_relation_name:
+                      ispatient?.patient_relation_name || "",
+                    patientNumber: ispatient?.patientNumber || "",
                   }}
                   validationSchema={basicSchema}
                   onSubmit={async (values, { setSubmitting }) => {
@@ -118,7 +118,9 @@ export default function EditPatient() {
                       <div className="row">
                         <div className="col-sm-6">
                           <div className="field-set">
-                            <label>Patient Name<span className="text-danger">*</span></label>
+                            <label>
+                              Patient Name<span className="text-danger">*</span>
+                            </label>
                             <Field
                               className="form-control"
                               type="text"
@@ -133,7 +135,8 @@ export default function EditPatient() {
                         </div>
                         <div className="col-sm-6">
                           <div className="field-set">
-                            <label>Age<span className="text-danger">*</span>
+                            <label>
+                              Age<span className="text-danger">*</span>
                             </label>
                             <Field
                               className="form-control"
@@ -149,7 +152,8 @@ export default function EditPatient() {
                         </div>
                         <div className="col-sm-6">
                           <div className="field-set">
-                            <label>Email<span className="text-danger">*</span>
+                            <label>
+                              Email<span className="text-danger">*</span>
                             </label>
                             <Field
                               className="form-control"
@@ -165,7 +169,10 @@ export default function EditPatient() {
                         </div>
                         <div className="col-sm-6">
                           <div className="field-set">
-                            <label>Contact Number{" "}<span className="text-danger">*</span></label>
+                            <label>
+                              Contact Number{" "}
+                              <span className="text-danger">*</span>
+                            </label>
                             <Field
                               className="form-control"
                               type="text"
@@ -180,7 +187,9 @@ export default function EditPatient() {
                         </div>
                         <div className="col-sm-6">
                           <div className="field-set">
-                            <label>Country<span className="text-danger">*</span></label>
+                            <label>
+                              Country<span className="text-danger">*</span>
+                            </label>
                             <Field name="country">
                               {({ field, form }) => (
                                 <>
@@ -188,9 +197,14 @@ export default function EditPatient() {
                                     <Select
                                       value={field.value}
                                       onChange={(e) =>
-                                        form.setFieldValue("country", e.target.value)
+                                        form.setFieldValue(
+                                          "country",
+                                          e.target.value
+                                        )
                                       }
-                                      input={<OutlinedInput placeholder="Select Country" />}
+                                      input={
+                                        <OutlinedInput placeholder="Select Country" />
+                                      }
                                       className="select-country form-control"
                                       displayEmpty
                                       sx={{ height: 40 }}
@@ -212,7 +226,11 @@ export default function EditPatient() {
                                       ))}
                                     </Select>
                                   </FormControl>
-                                  <ErrorMessage name="country" component="div" style={{ color: "red" }} />
+                                  <ErrorMessage
+                                    name="country"
+                                    component="div"
+                                    style={{ color: "red" }}
+                                  />
                                 </>
                               )}
                             </Field>
@@ -220,10 +238,17 @@ export default function EditPatient() {
                         </div>
                         <div className="col-sm-6">
                           <div className="field-set gender-select">
-                            <label className="gen-label">Gender<span className="text-danger">*</span></label>
+                            <label className="gen-label">
+                              Gender<span className="text-danger">*</span>
+                            </label>
                             <div className="form-check-inline">
                               <label className="form-check-label">
-                                <Field type="radio" name="gender" value="Male" className="form-check-input" />{" "}
+                                <Field
+                                  type="radio"
+                                  name="gender"
+                                  value="Male"
+                                  className="form-check-input"
+                                />{" "}
                                 Male
                               </label>
                             </div>
@@ -255,17 +280,46 @@ export default function EditPatient() {
                               className="text-danger"
                             />
                           </div>
+                          <div className="col-sm-6">
+                            <Field
+  className="form-control"
+  type="text"
+  name="patientNumber"
+/>
+<ErrorMessage
+  name="patientNumber"
+  component="div"
+  className="text-danger"
+/>
+                            {/* <div className="field-set">
+                              <label>
+                                Patent Id<span className="text-danger">*</span>
+                              </label>
+                              <Field
+                                className="form-control"
+                                type="text"
+                                name="patientNumber"
+                              />
+                              <ErrorMessage
+                                name="patientNumber"
+                                component="div"
+                                className="text-danger"
+                              />
+                            </div> */}
+                          </div>
                         </div>
 
-<div className="treat-hd">
-                      <h6>Attendant Details</h6>
-                      <span className="line"></span>
-                    </div>
+                        <div className="treat-hd">
+                          <h6>Attendant Details</h6>
+                          <span className="line"></span>
+                        </div>
 
-
-                         <div className="col-sm-6">
+                        <div className="col-sm-6">
                           <div className="field-set">
-                            <label>Patient Relation Name{" "}<span className="text-danger">*</span></label>
+                            <label>
+                              Patient Relation Name{" "}
+                              <span className="text-danger">*</span>
+                            </label>
                             <Field
                               className="form-control"
                               type="text"
@@ -278,9 +332,12 @@ export default function EditPatient() {
                             />
                           </div>
                         </div>
-                         <div className="col-sm-6">
+                        <div className="col-sm-6">
                           <div className="field-set">
-                            <label>Patient Relation{" "}<span className="text-danger">*</span></label>
+                            <label>
+                              Patient Relation{" "}
+                              <span className="text-danger">*</span>
+                            </label>
                             <Field
                               className="form-control"
                               type="text"
@@ -294,10 +351,6 @@ export default function EditPatient() {
                           </div>
                         </div>
                       </div>
-
-
-
-
 
                       <div className="">
                         <button

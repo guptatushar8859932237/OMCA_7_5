@@ -307,8 +307,7 @@ export default function EditStaff() {
               profileImage: editStaff.profileImage || null,
             }}
             validationSchema={validationSchema}
-            onSubmit={handleSubmit}
-          >
+            onSubmit={handleSubmit}>
             {({ setFieldValue, isSubmitting, values }) => (
               <Form>
                 <div className="row">
@@ -399,8 +398,6 @@ export default function EditStaff() {
                     </div>
                   </div>
                 </div>
-
-                {/* Submit Button */}
                 <div className="">
                   <button type="submit" className="submit-btn" disabled={isSubmitting}>
                     {isSubmitting ? "Updating..." : "Submit"}
