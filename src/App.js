@@ -183,7 +183,7 @@ function App() {
                 element={<EditEnquiry />}
               />
               <Route
-                index
+                Patient-Detail
                 path="/Admin/add-patient-treatment"
                 element={<AddPatientTreatment />}
               />

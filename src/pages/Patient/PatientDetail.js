@@ -54,6 +54,7 @@ function PatientDetail() {
   const [tretment, setTretment] = useState([]);
   const [undadedservice, setUndadedservice] = useState([]);
   const [Service, setService] = useState([]);
+  const [statuddropdown, setStatuddropdown] = useState([]);
   const [reportdataget, setReportdataget] = useState([]);
   const [iniData, setIniData] = useState({});
   const [open, setOpen] = React.useState(false);
@@ -318,40 +319,66 @@ function PatientDetail() {
     }
   };
   const handlesubmitAppoint = async (e) => {
-    e.preventDefault();
-    setAppointErr({
-      note: false,
-      date: false,
-      drivername: false,
-      vehicalnumber: false,
-      drivercontact: false,
-    });
+  e.preventDefault();
 
-    if (!appHospital) {
-      setAppointErr((prevState) => ({ ...prevState, appHospital: true }));
-    }
-    if (!note) {
-      setAppointErr((prevState) => ({ ...prevState, note: true }));
-    }
-    if (!date) {
-      setAppointErr((prevState) => ({ ...prevState, hospitalcharge: true }));
-    }
+  const isOffline = statuddropdown === 'offline';
+
+  setAppointErr({
+    note: false,
+    date: false,
+    drivername: false,
+    vehicalnumber: false,
+    drivercontact: false,
+    pickuptime: false,
+    appHospital: false,
+    hospitalcharge: false,
+  });
+
+  let hasError = false;
+
+  if (!appHospital) {
+    setAppointErr((prev) => ({ ...prev, appHospital: true }));
+    hasError = true;
+  }
+
+  if (!note) {
+    setAppointErr((prev) => ({ ...prev, note: true }));
+    hasError = true;
+  }
+
+  if (!date) {
+    setAppointErr((prev) => ({ ...prev, date: true }));
+    hasError = true;
+  }
+
+  if (!pickuptime) {
+    setAppointErr((prev) => ({ ...prev, pickuptime: true }));
+    hasError = true;
+  }
+
+  if (isOffline) {
     if (!drivername) {
-      setAppointErr((prevState) => ({ ...prevState, drivername: true }));
+      setAppointErr((prev) => ({ ...prev, drivername: true }));
+      hasError = true;
     }
+
     if (!drivercontact) {
-      setAppointErr((prevState) => ({ ...prevState, drivercontact: true }));
+      setAppointErr((prev) => ({ ...prev, drivercontact: true }));
+      hasError = true;
     }
+
     if (!vehicalnumber) {
-      setAppointErr((prevState) => ({ ...prevState, vehicalnumber: true }));
+      setAppointErr((prev) => ({ ...prev, vehicalnumber: true }));
+      hasError = true;
     }
-    if (!pickuptime) {
-      setAppointErr((prevState) => ({ ...prevState, pickuptime: true }));
-    }
-    // If any field is empty, stop the submission
-    if (!note || !date) {
-      return;
-    }
+  }
+
+  // If any required field is missing, stop the submission
+  if (hasError) {
+    return;
+  }
+
+  try {
     const result = await dispatch(
       AppointmentForPatient({
         patientId: location.state.patientId,
@@ -365,24 +392,94 @@ function PatientDetail() {
         driver_contact: drivercontact,
       })
     ).unwrap();
-    try {
-      setOpen1(false);
-      Swal.fire("Patient assigned to Appointment successfully!", "", "success");
-      dispatch(GetPatientTreatments({ id: location.state.patientId }));
-      setTreatmentId("");
-      sethospitalharge("");
-      setHospitalId("");
-      setNote("");
-      setDate("");
-      setDrivercontact("");
-      setPickuptime("");
-      setDrivername("");
-      setVehicalnumber("");
-      setAppointErr(false);
-    } catch (err) {
-      Swal.fire("Error!", err?.message || "An error occurred", "error");
-    }
-  };
+
+    setOpen1(false);
+    Swal.fire("Patient assigned to Appointment successfully!", "", "success");
+    dispatch(GetPatientTreatments({ id: location.state.patientId }));
+
+    // Reset form fields
+    setTreatmentId("");
+    sethospitalharge("");
+    setHospitalId("");
+    setNote("");
+    setDate("");
+    setDrivercontact("");
+    setPickuptime("");
+    setDrivername("");
+    setVehicalnumber("");
+    setAppointErr(false);
+  } catch (err) {
+    Swal.fire("Error!", err?.message || "An error occurred", "error");
+  }
+};
+
+  // const handlesubmitAppoint = async (e) => {
+  //   e.preventDefault();
+    
+  //   setAppointErr({
+  //     note: false,
+  //     date: false,
+  //     drivername: false,
+  //     vehicalnumber: false,
+  //     drivercontact: false,
+  //   });
+
+  //   if (!appHospital) {
+  //     setAppointErr((prevState) => ({ ...prevState, appHospital: true }));
+  //   }
+  //   if (!note) {
+  //     setAppointErr((prevState) => ({ ...prevState, note: true }));
+  //   }
+  //   if (!date) {
+  //     setAppointErr((prevState) => ({ ...prevState, hospitalcharge: true }));
+  //   }
+  //   if (!drivername) {
+  //     setAppointErr((prevState) => ({ ...prevState, drivername: true }));
+  //   }
+  //   if (!drivercontact) {
+  //     setAppointErr((prevState) => ({ ...prevState, drivercontact: true }));
+  //   }
+  //   if (!vehicalnumber) {
+  //     setAppointErr((prevState) => ({ ...prevState, vehicalnumber: true }));
+  //   }
+  //   if (!pickuptime) {
+  //     setAppointErr((prevState) => ({ ...prevState, pickuptime: true }));
+  //   }
+  //   // If any field is empty, stop the submission
+  //   if (!note || !date) {
+  //     return;
+  //   }
+  //   const result = await dispatch(
+  //     AppointmentForPatient({
+  //       patientId: location.state.patientId,
+  //       hospitalId: appHospital,
+  //       treatment_id: treatmentId,
+  //       note: note,
+  //       appointment_Date: date,
+  //       pickup_time: pickuptime,
+  //       vehicle_no: vehicalnumber,
+  //       driver_name: drivername,
+  //       driver_contact: drivercontact,
+  //     })
+  //   ).unwrap();
+  //   try {
+  //     setOpen1(false);
+  //     Swal.fire("Patient assigned to Appointment successfully!", "", "success");
+  //     dispatch(GetPatientTreatments({ id: location.state.patientId }));
+  //     setTreatmentId("");
+  //     sethospitalharge("");
+  //     setHospitalId("");
+  //     setNote("");
+  //     setDate("");
+  //     setDrivercontact("");
+  //     setPickuptime("");
+  //     setDrivername("");
+  //     setVehicalnumber("");
+  //     setAppointErr(false);
+  //   } catch (err) {
+  //     Swal.fire("Error!", err?.message || "An error occurred", "error");
+  //   }
+  // };
   const [filesData, setFilesData] = useState({});
   const getdataApi = async () => {
     try {
@@ -2321,7 +2418,46 @@ function PatientDetail() {
                   method="post"
                   role="form"
                 >
+                  
                   <div className="field-set">
+                       <div>
+      <p>Appointment will be:</p>
+      <div className="d-flex">
+      <div className="me-5">
+ <label>
+        <input
+          type="radio"
+          name="status"
+          value="online"
+          
+          checked={statuddropdown === 'online'}
+                      onChange={(e) => setStatuddropdown(e.target.value)}
+
+          // onChange={handleChange}
+        />
+        Online
+      </label>
+      </div>
+     
+      <br />
+      <div>
+ <label>
+        <input
+          type="radio"
+          name="status"
+          value="offline"
+          checked={statuddropdown === 'offline'}
+                                onChange={(e) => setStatuddropdown(e.target.value)}
+
+          // onChange={handleChange}
+        />
+        Offline
+      </label>
+      </div>
+     </div>
+
+      {/* <p>Your selected status: <strong>{status}</strong></p> */}
+    </div>
                     <label>
                       Hospital<span className="text-danger">*</span>
                     </label>
@@ -2350,6 +2486,7 @@ function PatientDetail() {
                       }}
                     />
                   </div>
+                 
                   <div className="field-set">
                     <label>
                       Notes<span className="text-danger">*</span>
@@ -2387,7 +2524,11 @@ function PatientDetail() {
                       {appointErr && !note ? "*Please Enter Your date" : ""}
                     </span>
                   </div>
-                  <div className="field-set">
+                  {
+                    statuddropdown === 'offline' ?
+                    <>
+                   
+                    <div className="field-set">
                     <label>
                       Pickup Time<span className="text-danger">*</span>
                     </label>
@@ -2410,9 +2551,7 @@ function PatientDetail() {
                       {appointErr && !note ? "*Please Enter Your date" : ""}
                     </span> */}
                   </div>
-                  {/* vehicle_no:vehicalnumber, */}
-                  {/* driver_name:drivername, */}
-                  {/* driver_contact:drivercontact */}
+                  
                   <div className="field-set">
                     <label>
                       Driver Name<span className="text-danger">*</span>
@@ -2469,7 +2608,10 @@ function PatientDetail() {
                         ? "*Please Enter the Driver Name"
                         : ""}
                     </span>
-                  </div>
+                  </div> 
+                   </>: ""
+                  }
+                  
                   <DialogActions className="submit-main">
                     <Button
                       type="submit"

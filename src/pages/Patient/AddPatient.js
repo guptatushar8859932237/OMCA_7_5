@@ -18,7 +18,7 @@ export default function AddPatient() {
     age: Yup.number()
       .required("Age is required")
       .min(0, "Age cannot be less than 0")
-      .max(120, "Age cannot exceed 120"), // Adjust the max value as needed
+      .max(120, "Age cannot exceed 120"), 
     gender: Yup.string().required("Gender is required"),
     email: Yup.string()
       .email("Invalid email address")
@@ -45,11 +45,10 @@ export default function AddPatient() {
             "fileType",
             "Please upload at least one file",
             (value) => value && value.length > 0
-          ), // Validate the file array
+          ),
       otherwise: (schema) => schema.nullable(),
     }),
   });
-
   return (
     <>
       <div className="page-wrapper">
@@ -99,7 +98,6 @@ export default function AddPatient() {
                           formData.append("files[]", file)
                         );
                       }
-
                       const result = await dispatch(
                         AddAllPatients(formData)
                       ).unwrap();

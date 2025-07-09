@@ -713,6 +713,7 @@ export default function EditEnquiry() {
       .email("Enter valid email")
       .required("Email is required"),
     age: Yup.string().required("Age is required"),
+    town: Yup.string().required("Town is required"),
     address: Yup.string().required("Address is required"),
     emergency_contact_no: Yup.string()
       .matches(/^[0-9]{10,11}$/, "Phone number must be 10-11 digits")
@@ -724,8 +725,6 @@ export default function EditEnquiry() {
       .oneOf(["Male", "Female", "Others"], "Invalid gender selection")
       .required("Gender is required"),
     disease_name: Yup.string().required("Disease Name is required"),
-    // patient_relation_name: Yup.string().required("Patient Relation Name is required"),
-    // patient_relation: Yup.string().required("Patient Relation is required"),
     country: Yup.string().required("Country is required"),
   });
 
@@ -754,6 +753,7 @@ export default function EditEnquiry() {
                 initialValues={{
                   name: editenquiry?.name || "",
                   age: editenquiry?.age || "",
+                  town: editenquiry?.town || "",
                   email: editenquiry?.email || "",
                   gender: editenquiry?.gender || "",
                   emergency_contact_no: editenquiry?.emergency_contact || "",
@@ -1002,6 +1002,22 @@ export default function EditEnquiry() {
                               </FormControl>
                             )}
                           </Field>
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="field-set">
+                          <label>
+                            Town<span className="text-danger">*</span>
+                          </label>
+                          <Field
+                            className="form-control"
+                            name="town"
+                          />
+                          <ErrorMessage
+                            name="town"
+                            component="div"
+                            style={{ color: "red" }}
+                          />
                         </div>
                       </div>
                       <div className="col-sm-6">

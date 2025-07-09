@@ -32,6 +32,7 @@ export default function AddEnquiry() {
     address: Yup.string().required("Address is required"),
     email: Yup.string().matches(emailRegex, "Invalid email").required(),
     age: Yup.string().required("Age is required"),
+    town: Yup.string().required("Town is required"),
     emergency_contact_no: Yup.string()
       .matches(/^[0-9]{10,11}$/, "Phone number must be 10-11 digits")
       .required("Phone number is required"),
@@ -76,6 +77,7 @@ export default function AddEnquiry() {
                   disease_name: "",
                   patient_relation_name: "",
                   patient_relation: "",
+                  town: "",
                   relation_id: null,
                   patient_id_proof: null,
                 }}
@@ -267,6 +269,19 @@ export default function AddEnquiry() {
                               </>
                             )}
                           </Field>
+                        </div>
+                      </div>
+                       <div className="col-sm-6">
+                        <div className="field-set">
+                          <label>
+                            Town<span className="text-danger">*</span>
+                          </label>
+                          <Field className="form-control" name="town" />
+                          <ErrorMessage
+                            name="town"
+                            component="div"
+                            className="text-danger"
+                          />
                         </div>
                       </div>
                       <div className="col-sm-6">
