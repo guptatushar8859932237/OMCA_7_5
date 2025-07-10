@@ -310,11 +310,11 @@ import { GetAllServices, ActiveService } from "../../reducer/ServiceSlice";
 import axios from "axios";
 import { baseurl } from "../../Basurl/Baseurl";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-
+import { usePDF } from 'react-to-pdf';
 export default function AllServices() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+const { toPDF, targetRef } = usePDF({filename: 'page.pdf'});
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [rows, setRows] = useState([]);
@@ -483,6 +483,11 @@ export default function AllServices() {
                     <i className="fa fa-plus"></i> New Service
                   </Link>
                 </div>
+                <div>
+                  <Link onClick={() => toPDF()} className="add-button ms-2">
+                    <i className="fa fa-file-pdf-o"></i> Pdf
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
@@ -496,6 +501,7 @@ export default function AllServices() {
                     stickyHeader
                     aria-label="sticky table"
                     className="table-no-card"
+                    ref={targetRef}
                   >
                     <TableHead>
                       <TableRow>

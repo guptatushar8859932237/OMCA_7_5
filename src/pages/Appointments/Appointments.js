@@ -11,6 +11,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
+import { usePDF } from 'react-to-pdf';
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
@@ -25,6 +26,7 @@ export default function Appointments() {
   const [searchApiData, setSearchApiData] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const { toPDF, targetRef } = usePDF({filename: 'page.pdf'});
   const [filterValue, setFilterValue] = useState("");
 
   const handleChangeRowsPerPage = (event) => {
@@ -227,6 +229,12 @@ export default function Appointments() {
                         </span>
                         Export File
                       </button>
+                   <button onClick={() => toPDF()} className="add-button mx-2">
+                        <span>
+                      <i className="fa fa-file-pdf-o"></i>
+                        </span>
+                        Pdf
+                      </button>
                 </div>
               </div>
             </div>
@@ -243,6 +251,7 @@ export default function Appointments() {
                       stickyHeader
                       aria-label="sticky table"
                       className="table-no-card"
+                      ref={targetRef}
                     >
                       <TableHead>
                         <TableRow>

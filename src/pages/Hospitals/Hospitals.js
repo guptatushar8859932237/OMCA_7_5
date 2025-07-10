@@ -21,9 +21,11 @@ import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import ClearIcon from "@mui/icons-material/Clear";
 import { Pagination, Stack } from "@mui/material";
+import { usePDF } from 'react-to-pdf';
 import axios from "axios";
 export default function Hospitals() {
   const navigate = useNavigate();
+   const { toPDF, targetRef } = usePDF({filename: 'page.pdf'});
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [rows, setRows] = useState([]);
@@ -209,6 +211,9 @@ export default function Hospitals() {
                     <Link to="/Admin/add-hospitals" className="add-button">
                       <i className="fa fa-plus"></i> New Hospital
                     </Link>
+                    <Link onClick={() => toPDF()} className="add-button ms-2">
+                      <i className="fa fa-file-pdf-o"></i> Pdf
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -226,6 +231,7 @@ export default function Hospitals() {
                       stickyHeader
                       aria-label="sticky table"
                       className="table-no-card"
+                      ref={targetRef}
                     >
                       <TableHead>
                         <TableRow>

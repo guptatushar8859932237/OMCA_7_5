@@ -46,11 +46,12 @@ export default function EditPatient() {
       .max(120, "Age cannot exceed 120"),
     gender: Yup.string().required("Gender is required"),
     patientNumber: Yup.string().required("Patient ID is required"),
+    created_at: Yup.string().required("Date is required"),
+    patientDisease: Yup.string().required("Disease is required"),
     email: Yup.string()
       .email("Invalid email address")
       .required("Email is required"),
-    emergency_contact_no: Yup.string()
-      .required("Contact number is required"),
+    emergency_contact_no: Yup.string().required("Contact number is required"),
     country: Yup.string().required("Country is required"),
   });
 
@@ -83,6 +84,11 @@ export default function EditPatient() {
                     age: ispatient?.age || "",
                     gender: ispatient?.gender || "",
                     email: ispatient?.email || "",
+                    patientDisease:
+                      ispatient?.patient_disease?.[0]?.disease_name || "",
+                    created_at: ispatient?.createdAt
+                      ? ispatient.createdAt.split("T")[0]
+                      : "",
                     emergency_contact_no: ispatient?.emergency_contact || "",
                     country: ispatient?.country || "",
                     patient_relation: ispatient?.patient_relation || "",
@@ -145,6 +151,41 @@ export default function EditPatient() {
                             />
                             <ErrorMessage
                               name="age"
+                              component="div"
+                              className="text-danger"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-sm-6">
+                          <div className="field-set">
+                            <label>
+                              Disease<span className="text-danger">*</span>
+                            </label>
+                            <Field
+                              className="form-control"
+                              type="text"
+                              name="patientDisease"
+                            />
+                            <ErrorMessage
+                              name="patientDisease"
+                              component="div"
+                              className="text-danger"
+                            />
+                          </div>
+                        </div>
+                        <div className="col-sm-6">
+                          <div className="field-set">
+                            <label>
+                              Date<span className="text-danger">*</span>
+                            </label>
+                            <Field
+                              className="form-control"
+                              type="date"
+                              name="created_at"
+                            />
+                            <ErrorMessage
+                              name="created_at"
                               component="div"
                               className="text-danger"
                             />
@@ -282,30 +323,15 @@ export default function EditPatient() {
                           </div>
                           <div className="col-sm-6">
                             <Field
-  className="form-control"
-  type="text"
-  name="patientNumber"
-/>
-<ErrorMessage
-  name="patientNumber"
-  component="div"
-  className="text-danger"
-/>
-                            {/* <div className="field-set">
-                              <label>
-                                Patent Id<span className="text-danger">*</span>
-                              </label>
-                              <Field
-                                className="form-control"
-                                type="text"
-                                name="patientNumber"
-                              />
-                              <ErrorMessage
-                                name="patientNumber"
-                                component="div"
-                                className="text-danger"
-                              />
-                            </div> */}
+                              className="form-control"
+                              type="text"
+                              name="patientNumber"
+                            />
+                            <ErrorMessage
+                              name="patientNumber"
+                              component="div"
+                              className="text-danger"
+                            />
                           </div>
                         </div>
 

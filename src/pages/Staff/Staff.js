@@ -20,7 +20,9 @@ import TextField from "@mui/material/TextField";
 import { DeleteStaff } from "../../reducer/StaffSlice";
 import { Pagination, Stack } from "@mui/material";
 import axios from "axios";
+import { usePDF } from 'react-to-pdf';
 export default function Staff() {
+     const { toPDF, targetRef } = usePDF({filename: 'page.pdf'});
   const navigate = useNavigate();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -204,6 +206,16 @@ export default function Staff() {
                       </span>
                       Export File
                     </button>
+                    <button
+                     onClick={() => toPDF()}
+                  
+                      className="add-button ms-2"
+                    >
+                      <span>
+                        <i className="fa fa-file-pdf-o"></i>
+                      </span>
+                  Pdf
+                    </button>
                   </div>
                 </div>
               </div>
@@ -216,6 +228,7 @@ export default function Staff() {
                   <TableContainer
                     component={Paper}
                     style={{ overflowX: "auto" }}
+                    ref={targetRef}
                   >
                     <Table
                       stickyHeader

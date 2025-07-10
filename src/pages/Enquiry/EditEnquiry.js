@@ -791,7 +791,6 @@ export default function EditEnquiry() {
                         formData,
                       })
                     ).unwrap();
-
                     Swal.fire("Enquiry updated successfully!", "", "success");
                     navigate("/Admin/Inquiry");
                   } catch (err) {

@@ -54,7 +54,7 @@ function PatientDetail() {
   const [tretment, setTretment] = useState([]);
   const [undadedservice, setUndadedservice] = useState([]);
   const [Service, setService] = useState([]);
-  const [statuddropdown, setStatuddropdown] = useState([]);
+  const [statuddropdown, setStatuddropdown] = useState("offline");
   const [reportdataget, setReportdataget] = useState([]);
   const [iniData, setIniData] = useState({});
   const [open, setOpen] = React.useState(false);
@@ -340,7 +340,6 @@ function PatientDetail() {
     setAppointErr((prev) => ({ ...prev, appHospital: true }));
     hasError = true;
   }
-
   if (!note) {
     setAppointErr((prev) => ({ ...prev, note: true }));
     hasError = true;
@@ -385,11 +384,75 @@ function PatientDetail() {
         hospitalId: appHospital,
         treatment_id: treatmentId,
         note: note,
+        mode:statuddropdown ,
         appointment_Date: date,
         pickup_time: pickuptime,
         vehicle_no: vehicalnumber,
         driver_name: drivername,
         driver_contact: drivercontact,
+      })
+    ).unwrap();
+
+    setOpen1(false);
+    Swal.fire("Patient assigned to Appointment successfully!", "", "success");
+    dispatch(GetPatientTreatments({ id: location.state.patientId }));
+
+    // Reset form fields
+    setTreatmentId("");
+    sethospitalharge("");
+    setHospitalId("");
+    setNote("");
+    setDate("");
+    setDrivercontact("");
+    setPickuptime("");
+    setDrivername("");
+    setVehicalnumber("");
+    setAppointErr(false);
+  } catch (err) {
+    Swal.fire("Error!", err?.message || "An error occurred", "error");
+  }
+};
+  const handlesubmitAppoint111 = async (e) => {
+  e.preventDefault();
+
+  const isOffline = statuddropdown === 'offline';
+
+  setAppointErr({
+    note: false,
+    date: false,
+    appHospital: false,
+  });
+
+  let hasError = false;
+
+  if (!appHospital) {
+    setAppointErr((prev) => ({ ...prev, appHospital: true }));
+    hasError = true;
+  }
+  if (!note) {
+    setAppointErr((prev) => ({ ...prev, note: true }));
+    hasError = true;
+  }
+
+  if (!date) {
+    setAppointErr((prev) => ({ ...prev, date: true }));
+    hasError = true;
+  }
+
+  // If any required field is missing, stop the submission
+  if (hasError) {
+    return;
+  }
+
+  try {
+    const result = await dispatch(
+      AppointmentForPatient({
+        patientId: location.state.patientId,
+        hospitalId: appHospital,
+        treatment_id: treatmentId,
+        note: note,
+        mode:statuddropdown ,
+        appointment_Date: date,
       })
     ).unwrap();
 
@@ -2612,7 +2675,7 @@ function PatientDetail() {
                    </>: ""
                   }
                   
-                  <DialogActions className="submit-main">
+              {statuddropdown === 'offline'?    <DialogActions className="submit-main">
                     <Button
                       type="submit"
                       onClick={(e) => handlesubmitAppoint(e)}
@@ -2620,7 +2683,16 @@ function PatientDetail() {
                     >
                       Submit
                     </Button>
+                  </DialogActions>: <DialogActions className="submit-main">
+                    <Button
+                      type="submit"
+                      onClick={(e) => handlesubmitAppoint111(e)}
+                      variant="contained"
+                    >
+                      Submit
+                    </Button>
                   </DialogActions>
+}
                 </form>
               </Box>
             </Box>

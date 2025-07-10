@@ -36,6 +36,7 @@ import axios from "axios";
 import { baseurl } from "../Basurl/Baseurl";
 import { Pagination, Stack } from "@mui/material";
 import { toast, ToastContainer } from "react-toastify";
+import { usePDF } from 'react-to-pdf';
 
 export default function Inquiry() {
   const navigate = useNavigate();
@@ -55,6 +56,7 @@ export default function Inquiry() {
   const { Enquiry, loading, error } = useSelector((state) => state.Enquiry);
   const [seekerStatus, setSeekerStatus] = React.useState({});
   const [blogErr, setBlogErr] = useState(false);
+  const { toPDF, targetRef } = usePDF({filename: 'Enquiry.pdf'});
   console.log(Enquiry);
   const [enqId, setEnqId] = useState("");
   const handleClose3 = () => {
@@ -289,6 +291,7 @@ export default function Inquiry() {
         }
       });
   };
+
   return (
     <>
       <div className="page-wrapper">
@@ -350,6 +353,12 @@ export default function Inquiry() {
                         </span>
                         Export File
                       </button>
+                      <button onClick={() => toPDF()} className="add-button">
+                        <span>
+                          <i className="fa fa-file-pdf-o"></i>
+                        </span>
+                        pdf
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -368,6 +377,7 @@ export default function Inquiry() {
                       stickyHeader
                       aria-label="sticky table"
                       className="table-no-card"
+                      ref={targetRef}
                     >
                       <TableHead>
                         <TableRow>

@@ -26,6 +26,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import { usePDF } from 'react-to-pdf';
 import { Edit } from "@mui/icons-material";
 export default function Treatments() {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ export default function Treatments() {
   const [rows, setRows] = useState([]);
   const dispatch = useDispatch();
   const { Treatment, loading, error } = useSelector((state) => state.Treatment);
-
+   const { toPDF, targetRef } = usePDF({filename: 'page.pdf'});
   useEffect(() => {
     dispatch(GetAllTreatment());
   }, [dispatch]);
@@ -123,6 +124,9 @@ export default function Treatments() {
                     <Link to="/Admin/add-treatments" className="add-button">
                       <i className="fa fa-plus"></i> New Treatment
                     </Link>
+                    <Link onClick={() => toPDF()}  className="add-button ms-2">
+                      <i className="fa fa-file-pdf-o"></i> Pdf
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -140,6 +144,7 @@ export default function Treatments() {
                       stickyHeader
                       aria-label="sticky table"
                       className="table-no-card"
+                      ref={targetRef}
                     >
                       <TableHead>
                         <TableRow>
